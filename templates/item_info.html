@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="{{url_for('static', filename="css/content.css")}}">
+
+{% extends "base.html" %}
+{% block title %} 아이템 정보 {% endblock %}
+{% block content %}
+<a href="javascript:history.back()">뒤로가기</a>
+<div class="info-container">
+    <h3>아이템 정보</h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.type}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+        <tr>
+    </table>
+
+    <h3>최근 1년간 월간 매출액</h3>
+    <table id="item_sales">
+        <tr>
+            <th>년-월</th>
+            <th>판매 수익</th>
+            <th>판매 수량</th>
+        </tr>
+        {% for i in item_sales %}
+        <tr>
+            <td>{{i.month}}</td>
+            <td>{{i.revenue}}</td>
+            <td>{{i.cnt}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <h3>월별 매출액 그래프</h3>
+    <div>
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const item_data = {{ item_sales | tojson }};
+    let month = []
+    let revenue = []
+    let count = []
+    for ( i of item_data) {
+        console.log(i)
+        month.push(i.month)
+        revenue.push(i.revenue)
+        count.push(i.cnt)
+    }
+    console.log(month)
+    console.log(revenue)
+    console.log(count)
+
+    const ctx = document.getElementById('chart')
+    const data = {
+        labels: month,
+        datasets:[{
+            type: 'line',
+            label: '월별 매출액',
+            data: revenue,
+            yAxisID: 'y'
+        }, {
+            type: 'bar',
+            label: '월별 판매개수',
+            data: count,
+            yAxisID: 'y1'
+        }]
+    }
+    const config = {
+        type: 'scatter',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    position: 'left',
+                    beginAtZero: true,
+                },
+                y1: {
+                    position: 'right',
+                    beginAtZero: true,
+                    grid: {
+                        drawOnChartArea: false
+                    }
+                }
+            }
+        }}
+    new Chart(ctx, config)
+</script>
+
+{% endblock %}

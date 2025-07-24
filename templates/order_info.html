@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="{{url_for('static', filename="css/content.css")}}">
+
+{% extends "base.html" %}
+{% block title %} 주문 상세 정보 {% endblock %}
+{% block content %}
+<a href="javascript:history.back()">뒤로가기</a>
+<div class="info-container">
+
+<h3>주문 상세 정보</h3>
+<!-- {{order}} -->
+<h4>Order ID : {{order.order_id}}</h4>
+<h4>Order Time : {{order.ordertime}}</h4>
+<table>
+    <tr>
+        <th>Store_ID</th>
+        <th>Store Name</th>
+        <th>User_ID</th>
+        <th>User Name</th>
+    </tr>
+    <tr>
+        <td><a href="/stores/info/{{order.store_id}}">{{order.store_id}}</a></td>
+        <td>{{order.store}}</td>
+        <td><a href='/users/info/{{order.user_id}}'>{{order.user_id}}</a></td>
+        <td>{{order.user}}</td>
+    <tr>
+</table>
+<!-- 스토어 이름... 사용자 이름... 주문한 아이템 어떤 것들이 있는지... -->
+<h4>주문한 아이템</h4>
+<table id="orderitems">
+    <tr>
+        <th>Item ID</th>
+        <th>Item</th>
+        <th>Price</th>
+    </tr>
+    {% for i in items_in_order %}
+        <tr>
+            <td><a href="/items/info/{{i.item_id}}">{{i.item_id}}</a></td>
+            <td>{{i.item}}</td>
+            <td>{{i.price}}</td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,141 @@
+    <link rel="stylesheet" href="{{url_for('static', filename='css/content.css')}}"
+    {% extends "base.html" %}
+    {% block title %} 스토어 {% endblock %}
+    {% block content %}            
+    <div id="container">
+        <h1>아이템 목록</h1>
+        <form>
+            <div id="search">
+                <select id="search_field">
+                    <option value="id">ID</option>
+                    <option value="name">Name</option>
+                </select>
+                <input type="text" id="input_query" placeholder="검색어 입력">
+                <select id="type" name="type">
+                    <option value="">상품 종류 선택</option>
+                    {% for type in item_type %}
+                        <option value="{{type}}">{{type}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" id="submit">검색</button>
+            </div>
+            <div id="order_by">
+                <label> 정렬기준
+                    <select id="orderby" name="orderby">
+                        <option value="id">ID</option>
+                        <option value="name" selected>Name</option>
+                        <option value="type">Type</option>
+                        <option value="price">Price</option>
+                    </select>
+                </label>
+            </div> 
+        </form>
+        <table id="items_table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                {% for i in items %}
+                <tr>
+                    <td><a href="/items/info/{{i.id}}">{{i.id}}</a></td>
+                    <td>{{i.type}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.price}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p id="comment"></p>
+     </div>   
+    <div id="btn-container">
+        <div class="page-btn">
+            <button id="start_page" onclick="change_page(1)">처음</button>
+            {% if (current_page >= 1) and (current_page <= 10) %}
+                <button id="prev10" disabled>-10</button>
+            {% else %}
+                <button id="prev10" onclick="change_page({{current_page-10}})">-10</button>
+            {% endif %}
+            {% if current_page == 1 %}
+                <button id="previous" disabled>이전</button>
+            {% else %}
+                <button id="previous" onclick="change_page({{current_page-1}})">이전</button>
+            {% endif %}
+        </div>
+        <div id="pagination">
+            {% if ((current_page-1) // 10) == (end_page // 10) %}
+                {% for i in range(((current_page-1) // 10) * 10 + 1, end_page + 1 )%}
+                    <button onclick="change_page({{i}})">{{i}}</button>
+                {% endfor %}
+            {% else %}
+                {% for i in range(((current_page-1) // 10) * 10 + 1, ((current_page-1) // 10) * 10 + 11 )%}
+                    <button onclick="change_page({{i}})">{{i}}</button>
+                {% endfor %}
+            {% endif %}
+                <!-- 페이지 번호 뜨는 곳 -->
+        </div>
+        <div class="page-btn">
+            {% if current_page == end_page %}
+                <button id="next" disabled>다음</button>
+            {% else %}
+                <button id="next" onclick="change_page({{current_page+1}})">다음</button>
+            {% endif %}
+            {% if ((current_page-1) // 10) == ((end_page-1) // 10) %}
+                <button id="next10" disabled>+10</button>
+            {% else %}
+                <button id="next10" onclick="change_page({{current_page+10}})">+10</button>
+            {% endif %}
+            <button id="end_page" onclick="change_page({{end_page}})">마지막</button>
+        </div>
+    </div>
+    <script>
+        const search_field = document.getElementById('search_field')
+        const input_query = document.getElementById('input_query')
+        const type = document.getElementById('type')
+        const submit = document.getElementById('submit')
+        const orderby = document.getElementById('orderby')
+
+        submit.addEventListener('click', (e) => {
+            input_query.name = search_field.value;
+        })
+
+        const params = new URLSearchParams(window.location.search)
+        if (params.get('id')){
+            const id = params.get('id')
+            search_field.value = 'id'
+            input_query.value = id}
+        if (params.get('name')){
+            const name = params.get('name')
+            search_field.value = 'name'
+            input_query.value = name}
+        if (params.get('type')){
+            type.value = params.get('type')}
+        if (params.get('orderby')){
+            orderby.value = params.get('orderby')}
+
+        // 페이지 버튼 눌렀을 때, url의 겟 파라미터들 유지하면서 페이지 변경
+        function change_page(page) {
+            const url = new URL(window.location.href)
+            console.log(url)
+            url.searchParams.set('page', page )
+            console.log(url.toString())
+            window.location.href = url.toString()
+        }
+        // 정렬 기준 선택 시 이벤트리스너
+        orderby.addEventListener('change', (e) => {
+            console.log(e.target.value)
+            // 선택한 값으로 겟 파라미터 변경해서 페이지 변경
+            const params = new URL(window.location)
+            params.searchParams.set('orderby', e.target.value)
+            console.log(params)
+            window.location.href = params
+        }
+        )
+    </script>
+    {% endblock %}
+<!-- </body> -->
+<!-- </html> -->

@@ -1,0 +1,149 @@
+    <link rel="stylesheet" href="{{url_for('static', filename='css/content.css')}}"
+    {% extends "base.html" %}
+    {% block title %} 주문 {% endblock %}
+    {% block content %}
+    <div id="container">
+        <h1>주문 목록</h1>
+        <form>
+            <div id="search">
+                <select id="search_field">
+                    <option value="id">ID</option>
+                    <option value="store_id">Store_ID</option>
+                    <option value="user_id">User_ID</option>
+                </select>
+                <input type="text" id="input_query" placeholder="검색어 입력">
+                <input type="date" id="ordertime" name="ordertime">
+                <button type="submit" id="submit">검색</button>
+            </div>
+            <div id="order_by">
+                <label> 정렬기준
+                    <select id="orderby" name="orderby">
+                        <option value="id" selected>ID</option>
+                        <option value="ordertime">Order_Time</option>
+                        <option value="store_id">Store_ID</option>
+                        <option value="user_id">User_ID</option>
+                    </select>
+                </label>
+            </div>
+        </form>
+        <table id="orders_table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Order_Time</th>
+                    <th>Store_ID</th>
+                    <th>User_ID</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                {% for s in orders %}
+                <tr>
+                    <td><a href="/orders/info/{{s.id}}">{{s.id}}</a></td>
+                    <td>{{s.ordertime}}</td>
+                    <td><a href="/stores/info/{{s.store_id}}">{{s.store_id}}</a></td>
+                    <td><a href="/users/info/{{s.user_id}}">{{s.user_id}}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p id="comment"></p>
+    </div>
+    <div id="btn-container">
+        <div class="page-btn">
+            <button id="start_page" onclick="change_page(1)">처음</button>
+            {% if (current_page >= 1) and (current_page <= 10) %}
+                <button id="prev10" disabled>-10</button>
+            {% else %}
+                <button id="prev10"  onclick="change_page({{current_page-10}})">-10</button>
+            {% endif %}
+            {% if current_page == 1 %}
+                <button id="previous" disabled>이전</button>
+            {% else %}
+                <button id="previous" onclick="change_page({{current_page-1}})">이전</button>
+            {% endif %}
+        </div>
+        <div id="pagination">
+            <!-- 페이지 번호 뜨는 곳 -->
+            {% if ((current_page-1) // 10) == (end_page // 10) %}
+                {% for i in range(((current_page-1) // 10) * 10 + 1, end_page + 1 )%}
+                    <button onclick="change_page({{i}})">{{i}}</button>
+                {% endfor %}
+            {% else %}
+                {% for i in range(((current_page-1) // 10) * 10 + 1, ((current_page-1) // 10) * 10 + 11 )%}
+                    <button onclick="change_page({{i}})">{{i}}</button>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="page-btn">
+            {% if current_page == end_page %}
+                <button id="next" disabled>다음</button>
+            {% else %}
+                <button id="next" onclick="change_page({{ current_page + 1 }})">다음</button>
+            {% endif %}
+            {% if ((current_page-1) // 10) == ((end_page-1) // 10) %}
+                <button id="next10" disabled>+10</button>
+            {% else %}
+                <button id="next10" onclick="change_page({{current_page+10}})">+10</button>
+            {% endif %}
+            <button id="end_page" onclick="change_page({{end_page}})">끝</button>
+        </div>
+    </div>
+    <script>
+        const search_field = document.getElementById('search_field')
+        const input_query = document.getElementById('input_query')
+        const ordertime = document.getElementById('ordertime')
+        const submit = document.getElementById('submit')
+        const orderby = document.getElementById('orderby')
+        
+        // submit 클릭 시, 폼 내용 파라미터에 반영
+        submit.addEventListener('click', (e) => {
+            console.log(e.target)
+            input_query.name = search_field.value;
+        })
+        
+        // 파라미터 값 가져와서 검색창이나, 정렬기준에 반영
+        // 검색어 유지
+        const parameters = new URLSearchParams(window.location.search);
+        console.log(parameters.get('id'))
+        console.log(parameters.get('ordertime'))
+        console.log(parameters.get('store_id'))
+        console.log(parameters.get('user_id'))
+        if (parameters.get('id')) {
+            search_field.value = 'id'
+            input_query.value = parameters.get('id')}
+        if (parameters.get('store_id')) {
+            search_field.value = 'store_id'
+            input_query.value = parameters.get('store_id')}
+        if (parameters.get('user_id')) {
+            search_field.value = 'user_id'
+            input_query.value = parameters.get('user_id')}
+        if (parameters.get('ordertime')) {
+            ordertime.value = parameters.get('ordertime')}
+        if (parameters.get('orderby')) {
+            orderby.value = parameters.get('orderby')}
+
+
+        // 페이지 버튼 눌렀을 때, url의 겟 파라미터들 유지하면서 페이지 변경
+        function change_page(page) {
+            const url = new URL(window.location.href)
+            console.log(url)
+            url.searchParams.set('page', page )
+            console.log(url.toString())
+            window.location.href = url.toString()
+        }
+        // 정렬 기준 선택 시 이벤트리스너
+        orderby.addEventListener('change', (e) => {
+            console.log(e.target.value)
+            // 선택한 값으로 겟 파라미터 변경해서 페이지 변경
+            const params = new URL(window.location)
+            params.searchParams.set('orderby', e.target.value)
+            console.log(params)
+            window.location.href = params
+        }
+        )
+
+    </script>
+    {% endblock %}       
+        
+<!-- </body>
+</html> -->

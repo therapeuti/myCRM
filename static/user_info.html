@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 상세정보</title>
+    <link rel="stylesheet" href="/static/css/users.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users">Users</a>
+        <a class="nav_link" href="/stores">Stores</a>
+        <a class="nav_link" href="/orders">Orders</a>
+        <a class="nav_link" href="/items">Items</a>
+        <a class="nav_link" href="/orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="user_container">
+        <a href="javascript:history.back()" class="back_link">뒤로가기</a>
+        <h3>사용자 상세 정보</h3>    
+        <table id="user">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Birthdate</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- 사용자 정보 뜨는 곳 -->
+        </tbody>
+        </table>
+        <h3>사용자의 주문내역</h3>    
+        <table id="order_history">
+            <tr>
+                <th>order_id</th>
+                <th>ordertime</th>
+                <th>store</th>
+                <th>item</th>
+            </tr>
+            <tr>
+                <!-- 주문 내역 뜨는 곳 -->
+            </tr>
+        </table>
+        <p class="comment" id="p_order_history"></p>
+        
+        <h3>자주 방문한 매장 Top 5</h3> 
+        <p class="top5" id="p_store_top5"></p>
+        <ol id="store_top5">
+            <!-- 매장 리스트 -->
+        </ol>
+        
+        <h3>자주 주문한 상품명 Top 5</h3>
+        <p class="top5" id="p_item_top5"></p>
+        <ol id="item_top5">
+            <!-- 상품 리스트 -->
+        </ol> 
+    </div>
+    
+
+    <script>
+        const user = document.getElementById('user')
+        const tbody = document.getElementById('tbody')
+        const store_top5 = document.getElementById('store_top5')
+        const item_top5 = document.getElementById('item_top5')
+
+        const url2 = window.location.href
+        // console.log(url2)
+        const url = window.location.pathname
+        // console.log(url)
+        const last = url.split('/')
+        // console.log(last)
+        const userid = last[last.length - 1] 
+        // console.log(userid)
+
+        // fetch로 쿼리 정보 받아오기
+        fetch(`/api/user_info/${userid}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                const new_tr = document.createElement('tr')
+                    new_tr.innerHTML = `<td>${data.id}</td>
+                                        <td>${data.name}</td>
+                                        <td>${data.birthdate}</td>
+                                        <td>${data.age}</td>
+                                        <td>${data.gender}</td>
+                                        <td>${data.address}</td>`
+                    tbody.appendChild(new_tr)
+            }
+        )
+        // 사용자의 주문내역 받아오기
+        fetch(`/api/order_history/${userid}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('주문내역: ',data)
+                if (data.length == 0){
+                    document.getElementById('p_order_history').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (u of data) {
+                        const new_tr = document.createElement('tr')
+                        new_tr.innerHTML = `<td><a href="/orders/info/${u.order_id}">${u.order_id}</td>
+                            <td>${u.ordertime}</td>
+                            <td>${u.store}</td>
+                            <td>${u.item}</td>`
+                            order_history.appendChild(new_tr)
+                        }
+                    }
+            })
+        
+        fetch(`/api/store_top5/${userid}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.length == 0){
+                    document.getElementById('p_store_top5').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (i of data) {
+                        const new_li = document.createElement('li')
+                        new_li.innerText = `${i.store} : ${i.cnt}번 방문`
+                        store_top5.appendChild(new_li)
+                    }
+                }
+            }
+            )
+        
+        fetch(`/api/item_top5/${userid}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length == 0){
+                    document.getElementById('p_item_top5').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (i of data) {
+                        const new_li = document.createElement('li')
+                        new_li.innerText = `${i.item} : ${i.cnt}번 구매` 
+                        item_top5.appendChild(new_li)                    
+                    }}
+            })
+
+    </script>
+    </body>
+    </html>
