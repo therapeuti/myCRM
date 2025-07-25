@@ -155,3 +155,25 @@ def get_item_top5(id):
     #     item_top5 = [dict(s) for s in item_top5]
     #     logging.debug(item_top5)
     return item_top5
+
+def update_user(user):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('''
+                UPDATE users 
+                SET name=?, birthdate=?, age=?, gender=?, address=? 
+                WHERE id=?
+                ''',
+                (user['name'], user['birthdate'], user['age'], user['gender'], user['address'], user['id']))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def delete_user_by_id(id):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM users WHERE id=?', (id, ))
+    conn.commit()
+    cur.close()
+    conn.close()
+    

@@ -38,7 +38,7 @@ def get_users():
 
     users, count_users = get_users_list(number_per_page, filtering)
     total_pages = math.ceil(count_users / number_per_page)
-    if page > total_pages:
+    if (total_pages != 0) and (page > total_pages):
         abort(404)
     logging.debug(f'send_user() : {users}')
     logging.debug(f'전체 사용자 데이터 개수: {count_users}, 전체 페이지 수: {total_pages}')
@@ -49,6 +49,22 @@ def get_user_info(id):
     user = get_user_by_id(id)
     logging.debug(f'ID로 조회한 사용자: {user}')
     return jsonify(user)
+
+@api_bp.route('/update_user/<id>', methods=['PUT'])
+def update_user_info(id):
+    user = request.get_json()
+    logging.debug(user)
+    update_user(user)
+    user_info = get_user_by_id(id)
+    logging.debug(user_info)
+    return jsonify(user_info)
+
+@api_bp.route('/delete_user/<id>', methods=['DELETE'])
+def delete_user(id):
+    delete_user_by_id(id)
+    user = get_user_by_id(id)
+    logging.debug(user)
+    return jsonify({'message': f'사용자ID {id}의 정보가 삭제되었습니다.'})
 
 @api_bp.route('/order_history/<id>')
 def get_users_order_history(id):

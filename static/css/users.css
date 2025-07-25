@@ -70,6 +70,7 @@ nav {
     border-radius: 12px;
     padding: 20px 40px;
     margin: 40px auto;
+    min-width: 900px;
     width: 90%;
     max-width: 1200px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -100,6 +101,7 @@ form {
     display: flex;
     justify-content: right;
 }
+#edit_btn button,
 #search select,
 #search input,
 #search button,
@@ -109,6 +111,7 @@ form {
     border-radius: 6px;
     background-color: #f8f9fa;
     transition: border 0.2s ease-in-out;
+    cursor: pointer;
 }
 #search input:focus,
 #search select:focus,
@@ -199,4 +202,23 @@ h3 {
 }
 ol {
     margin-top: 10px;
+}
+#user_head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#tbody #user_name {
+    width: 70px;
+    text-align: center;
+}
+#tbody #birthdate {
+    text-align: center;
+}
+#tbody #age {
+    width: 40px;
+    text-align: center;
+}
+#tbody #address {
+    width: 250px;
 }
