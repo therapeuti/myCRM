@@ -1,9 +1,8 @@
 from flask import Blueprint, current_app
-from flask import send_from_directory, jsonify, request
+from flask import send_from_directory
 from database.database import *
-import math
 
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                    format='%(asctime)s [%(levelname)s] %(messages)s',
                    datefmt='%Y-%m-%d %H-%M-%S')
 

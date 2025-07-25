@@ -1,6 +1,7 @@
 from flask import Blueprint, current_app
-from flask import request, jsonify
+from flask import request, jsonify, abort
 from database.database import *
+from database.users_db import *
 import logging
 import math
 
@@ -15,6 +16,8 @@ number_per_page = 10
 def get_users():
     logging.debug('---------------사용자 목록 조회------------------------')
     page = request.args.get('page', default=1, type=int)
+    if (page < 1) or type(page) is not int:
+        page = 1
     orderby = request.args.get('orderby', default='name', type=str)
     u_id = request.args.get('id', type=str)
     name = request.args.get('name', type=str)
@@ -35,6 +38,8 @@ def get_users():
 
     users, count_users = get_users_list(number_per_page, filtering)
     total_pages = math.ceil(count_users / number_per_page)
+    if page > total_pages:
+        abort(404)
     logging.debug(f'send_user() : {users}')
     logging.debug(f'전체 사용자 데이터 개수: {count_users}, 전체 페이지 수: {total_pages}')
     return jsonify({'users':users, 'total_pages':total_pages})

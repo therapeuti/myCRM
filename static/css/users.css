@@ -23,6 +23,7 @@ nav {
     gap: 20px;
     border-bottom: 1px solid #dee2e6;
     padding: 0 20px 0 0;
+    z-index: 1000;
 }
 .nav_link {
     text-decoration: none;
@@ -78,6 +79,10 @@ nav {
     top: 10px;
     left: 40px;
     color:#868e96;
+}
+#order_history_container {
+    max-height: 500px;
+    overflow-y: auto;
 }
 h1 {
     margin-bottom: 20px;
