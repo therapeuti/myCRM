@@ -1,26 +1,19 @@
 from flask import Flask
-from flask import render_template, redirect, url_for, request, jsonify
+from flask import render_template, redirect, url_for, request, jsonify, send_from_directory
 from flask import flash
 from routes.users import users_bp
-from routes.stores import stores_bp
-from routes.orders import orders_bp
-from routes.items import items_bp
-from routes.orderitems import orderitems_bp
 from routes.api import api_bp
 from database.database import *
 from database.users_db import *
+from database.stores_db import *
+from database.items_db import *
 import logging
-import math
 import uuid
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.secret_key = 'my_secret'
 app.register_blueprint(users_bp, url_prefix='/users')
-app.register_blueprint(stores_bp, url_prefix='/stores')
-app.register_blueprint(orders_bp, url_prefix='/orders')
-app.register_blueprint(items_bp, url_prefix='/items')
-app.register_blueprint(orderitems_bp, url_prefix='/orderitems')
 app.register_blueprint(api_bp, url_prefix='/api')
 
 app.config['DATABASE'] = 'database/mycrm.db'
@@ -28,6 +21,60 @@ app.config['DATABASE'] = 'database/mycrm.db'
 @app.route('/', methods=['GET','POST'])
 def index():
     return render_template('index.html')
+
+@app.route('/stores/')
+def stores():
+    return send_from_directory(app.static_folder, 'stores_index.html')
+
+@app.route('/orders/')
+def orders():
+    return send_from_directory(app.static_folder, 'orders_index.html')
+
+@app.route('/items/')
+def items():
+    return send_from_directory(app.static_folder, 'items_index.html')
+
+@app.route('/orderitems/')
+def orderitems():
+    return send_from_directory(app.static_folder, 'orderitems_index.html')
+
+@app.route('/stores/add_store', methods=['POST'])
+def add_store():
+    s_id = str(uuid.uuid4())
+    s_type = request.form.get('type')
+    s_name = request.form.get('name')
+    address = request.form.get('address')
+    logging.debug(f'스토어 정보 : {s_id}, {s_name}, {s_type}, {address}')
+    store = {'id': s_id, 'name': s_name, 'type': s_type, 'address': address}
+    insert_result = insert_store(store)
+    new_store = get_store_by_id(s_id)
+    logging.debug(insert_result)
+    logging.debug(new_store)
+    return redirect(url_for('store_info', id=s_id))
+
+@app.route('/items/add_item', methods=['POST'])
+def add_item():
+    i_id = str(uuid.uuid4())
+    i_type = request.form.get('type', type=str)
+    name = request.form.get('name', type=str)
+    price = request.form.get('price', type=int)
+    item = {'id': i_id, 'type': i_type, 'name': name, 'price': price}
+    new_item = insert_item(item)
+    logging.debug(f'추가된 아이템: {new_item}')
+    return redirect(url_for('item_info', id=i_id))
+
+@app.route('/store_info/<id>')
+def store_info(id):
+    logging.debug('스토어 상세 페이지')
+    return send_from_directory(app.static_folder, 'store_info.html')
+
+@app.route('/item_info/<id>')
+def item_info(id):
+    return send_from_directory(app.static_folder, 'item_info.html')
+
+
+
+
 
 @app.route('/admin_login', methods=['POST'])
 def admin_login():

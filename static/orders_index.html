@@ -3,62 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>사용자 조회</title>
-    <link rel="stylesheet" href="/static/css/users.css">
+    <title> 주문 조회 </title>
+    <link rel="stylesheet" href="/static/css/orders.css">
 </head>
 <body>
     <nav>
-        <a class="nav_link" href="/">Home</a>
+        <a class="nav_link" href="/">Login</a>
         <a class="nav_link" href="/users" data-section="users">Users</a>
-        <a class="nav_link" href="/stores">Stores</a>
-        <a class="nav_link" href="/orders">Orders</a>
-        <a class="nav_link" href="/items">Items</a>
-        <a class="nav_link" href="/orderitems">Orderitems</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
     </nav>
     <hr>
     <div id="container">
-        <h1>사용자 목록</h1>
+        <h1>주문 목록</h1>
         <form>
             <div id="search">
                 <select id="search_field">
                     <option value="id" selected>ID</option>
-                    <option value="name">Name</option>
-                    <option value="address">Address</option>
+                    <option value="store_id">Store ID</option>
+                    <option value="user_id">User ID</option>
                 </select>
                 <input type="text" id="input_query" placeholder="검색어 입력">
-                <select id="gender" name="gender">
-                    <option value="">성별 선택</option>
-                    <option value="Female">Female</option>
-                    <option value="Male">Male</option>
-                </select>
+                <input type="date" id="orderdate" name="ordertime">
                 <button type="submit" id="submit">검색</button>
+                <button type="button" id="reset">초기화</button>
             </div>
             <div id="order_by">
                 <label> 정렬기준
                     <select id="orderby" name="orderby">
-                        <option value="id">ID</option>
-                        <option value="name" selected>Name</option>
-                        <option value="birthdate">Birthdate</option>
-                        <option value="age">Age</option>
-                        <option value="gender">Gender</option>
-                        <option value="address">Address</option>
+                        <option value="id" selected>ID</option>
+                        <option value="ordertime">Order Time</option>
+                        <option value="store_id">Store ID</option>
+                        <option value="user_id">User ID</option>
                     </select>
                 </label>
             </div>
         </form>
-        <table id="user_table">
+        <table id="order_table">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Birthdate</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Address</th>
+                <th>Order Time</th>
+                <th>Store ID</th>
+                <th>User ID</th>
             </tr>
         </thead>
         <tbody id="tbody">
-            <!-- 사용자 정보 뜨는 곳 -->
+            <!-- 주문  목록 뜨는 곳 -->
         </tbody>
     </table>
     <p class="comment" id="search_result"></p>
@@ -78,29 +71,15 @@
             <button id="end_page">끝</button>
         </div>
     </div>
-    <div id="modal_users" class="modal">
-        <div id="insert_users">
-            <form action="/signup" method="post" id="modal_form">
-                <h3>사용자 추가</h3><br>
-                <input type="text" name="name" placeholder="이름" required="">
-                <input type="date" name="birthdate" placeholder="생년월일" max="2024-12-31" required="">
-                <select name="gender">
-                    <option value="Female">Female</option>
-                    <option value="Male">male</option>
-                </select>
-                <input type="text" name="address" placeholder="주소" required="">
-                <button>사용자 정보 추가하기</button>
-            </form>
-        </div>
-    </div>
+    
             
         
     <script>
         const current_path = window.location.pathname;
         const search_field = document.getElementById('search_field');
         const input_query = document.getElementById('input_query');
+        const ordertime = document.getElementById('ordertime')
         const submit = document.getElementById('submit');
-        const gender = document.getElementById('gender');
         const orderby = document.getElementById('orderby');
         
         // nav바에서 페이지 버튼 활성화 -> 페이지 로드할 때마다 확인하여 적용
@@ -118,14 +97,14 @@
         if (parameters.get('id')) {
             search_field.value = 'id'
             input_query.value = parameters.get('id')}
-        if (parameters.get('name')) {
-            search_field.value = 'name'
-            input_query.value = parameters.get('name')}
-        if (parameters.get('address')) {
-            search_field.value = 'address'
-            input_query.value = parameters.get('address')}
-        if (parameters.get('gender')) {
-            gender.value = parameters.get('gender')}
+        if (parameters.get('store_id')) {
+            search_field.value = 'store_id'
+            input_query.value = parameters.get('store_id')}
+        if (parameters.get('user_id')) {
+            search_field.value = 'user_id'
+            input_query.value = parameters.get('user_id')}
+        if (parameters.get('ordertime')) {
+            ordertime.value = parameters.get('ordertime')}
         if (parameters.get('orderby')) {
             orderby.value = parameters.get('orderby')}
 
@@ -133,6 +112,13 @@
         submit.addEventListener('click', (e)=>{
             input_query.name = search_field.value
         })
+        // 검색 내용 초기화
+        reset.addEventListener('click', (e)=>{
+            search_field.value = ''
+            input_query.value = ''
+            store_type.value = ''
+        })
+
 
         // 정렬 이벤트 리스너 
         orderby.addEventListener('change', (e)=>{
@@ -140,8 +126,6 @@
             query.searchParams.set('orderby', e.target.value)
             query.searchParams.set('page', 1)
             window.location.href = query
-            // const current_page = get_current_page()
-            // change_page(1)
         })
 
         // 페이지 이동 버튼 이벤트 리스너
@@ -158,9 +142,9 @@
         })
         end_btn.addEventListener('click', ()=>{
             console.log('마지막 페이지 버튼 누름')
-            fetch_users_data()
+            fetch_orders_data()
                 .then(data =>{
-                    const end = data.total_pages
+                    const end = data.end_page
                     change_page(end)
                 })
         })
@@ -178,9 +162,9 @@
         })
         next10.addEventListener('click', ()=>{
             const current_page = get_current_page()
-            fetch_users_data()
+            fetch_orders_data()
                 .then(data =>{
-                    const end = data.total_pages
+                    const end = data.end_page
                     if ((current_page + 10)> end){
                         change_page(end)
                     } else {
@@ -221,39 +205,55 @@
             }
             return Number(current_page)
         }
-        // 사용자 정보 한 행에 입력하는 함수
-        function render_user(user) {
-            const ths = ['id','name','birthdate','age','gender','address']
+        // 주문 정보 한 행에 입력하는 함수
+        function render_order(order) {
+            const ths = ['id','ordertime','store_id','user_id']
             const new_tr = document.createElement('tr')
             for (let key of ths) {
                 const new_td = document.createElement('td')
-                if (key == 'id') {
-                    const new_a = document.createElement('a')
-                    new_a.href = `/users/info/${user[key]}`
-                    new_a.innerText = user[key]
-                    new_td.appendChild(new_a)
-                    new_tr.appendChild(new_td)
-                } else {
-                    new_td.innerText = user[key]
-                    new_tr.appendChild(new_td)
+                switch (key) {
+                    case 'id':
+                        const new_a = document.createElement('a')
+                        new_a.href = `/orders/info/${order[key]}`
+                        new_a.innerText = order[key]
+                        new_td.appendChild(new_a)
+                        new_tr.appendChild(new_td)
+                        break
+                    case 'store_id':
+                        const new_as = document.createElement('a')
+                        new_as.href = `/stores/info/${order[key]}`
+                        new_as.innerText = order[key]
+                        new_td.appendChild(new_as)
+                        new_tr.appendChild(new_td)
+                        break
+                    case 'user_id':
+                        const new_au = document.createElement('a')
+                        new_au.href = `/users/info/${order[key]}`
+                        new_au.innerText = order[key]
+                        new_td.appendChild(new_au)
+                        new_tr.appendChild(new_td)
+                        break
+                    default:
+                        new_td.innerText = order[key]
+                        new_tr.appendChild(new_td)
                 }
             }
             return new_tr
         }
-        // 사용자 목록 렌더링하는 함수
-        function render_users(users) {
-            console.log('-----render_users 함수 실행')
-            console.log('사용자 데이터 수: ', users.length)
-            const user_list = document.getElementById('tbody')
+        // 주문 목록 렌더링하는 함수
+        function render_orders(orders) {
+            console.log('-----render_orders 함수 실행')
+            console.log('주문 데이터 수: ', orders.length)
+            const order_list = document.getElementById('tbody')
             const search_result = document.getElementById('search_result')
-            user_list.innerHTML = ''
+            order_list.innerHTML = ''
             search_result.textContent = ''
-            if (users.length == 0) {
-                search_result.textContent = "검색 조건에 해당하는 사용자를 찾을 수 없습니다."
+            if (orders.length == 0) {
+                search_result.textContent = "검색 조건에 해당하는 주문를 찾을 수 없습니다."
             } else {
-                for (u of users) {
-                    const new_tr = render_user(u)
-                    user_list.appendChild(new_tr)
+                for (u of orders) {
+                    const new_tr = render_order(u)
+                    order_list.appendChild(new_tr)
                 }
             }
         }
@@ -316,26 +316,26 @@
             }
         }
         
-        function fetch_users_data() {
+        function fetch_orders_data() {
             console.log('-----fetch 함수 실행됨')
             const params = new URLSearchParams(window.location.search)
             const current_page = params.get('page')
             const id = params.get('id')
-            const name = params.get('name')
-            const address = params.get('address')
-            const gender = params.get('gender')
+            const ordertime = params.get('ordertime')
+            const store_id = params.get('store_id')
+            const user_id = params.get('user_id')
             const orderby = params.get('orderby')
 
             const query = new URLSearchParams()
             if (id) {query.set('id', id)}
-            if (name) {query.set('name', name)}
-            if (address) {query.set('address', address)}
-            if (gender) {query.set('gender', gender)}
+            if (ordertime) {query.set('ordertime', ordertime)}
+            if (store_id) {query.set('store_id', store_id)}
+            if (user_id) {query.set('user_id', user_id)}
             if (current_page) {query.set('page', current_page)}
             if (orderby) {query.set('orderby', orderby)}
             console.log('쿼리 내용: ', query)
 
-            return fetch(`/api/users/?${query.toString()}`) // blueprint 사용시 fetch경로
+            return fetch(`/api/orders/?${query.toString()}`) // blueprint 사용시 fetch경로
                 .then(response => {
                     if (response.status == 404) {
                         window.location.href = '/404'
@@ -345,17 +345,17 @@
                     }
                     return response.json()})
                 .catch(error => {
-                    console.error('사용자 데이터 로딩 중 오류: ', error);
-                    return {users: [], total_pages: 0}
+                    console.error('주문 데이터 로딩 중 오류: ', error);
+                    return {orders: [], end_page: 0}
                 })
         }
         
         function render_page(data) {   
                 console.log('-----render_page 실행')
-                const users  = data.users
-                const end_pages = data.total_pages
-                // 사용자 목록 렌더링
-                render_users(users)
+                const orders  = data.orders
+                const end_pages = data.end_page
+                // 주문 목록 렌더링
+                render_orders(orders)
                 // 페이지 번호 렌더링
                 render_page_btns(end_pages)
         }
@@ -368,19 +368,13 @@
                 url.searchParams.set('page', page);
                 history.pushState({page: page}, '', url);
                 }
-            fetch_users_data()
+            fetch_orders_data()
             .then(data => {
                 render_page(data)
             })
         }
 
-        // function init() {
-            // console.log('init--------------')
-            // const page = get_current_page()
         change_page(1, false)
-            // }
-        
-        // init()
     </script>
 </body>
 </html>

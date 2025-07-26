@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스토어 상세정보</title>
+    <link rel="stylesheet" href="/static/css/stores.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="store_container">
+        <a href="javascript:history.back()" class="back_link">뒤로가기</a>
+        <div id="store_head">
+            <h3>스토어 상세 정보</h3>    
+            <div id="edit_btn">
+                <button id="update">수정</button>
+                <button id="delete">삭제</button>
+            </div>
+        </div>
+        <table id="store">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Store TYPE</th>
+                <th>Store Name</th>
+                <th>Store Address</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr>
+                <td id="store_id"></td>
+                <td><select id="type"></select></td>
+                <td><input type="text" id="store_name"></td>
+                <td><input type="text" id="address"></td>
+            </tr>
+            <!-- 스토어 정보 뜨는 곳 -->
+        </tbody>
+        </table>
+        <h3>월간 매출액</h3>
+            <table id="monthly_sales">
+                <tr>
+                    <th>order_id</th>
+                    <th>ordertime</th>
+                    <th>store</th>
+                    <th>item</th>
+                </tr>
+                    <!-- 월간 매출액 뜨는 곳 -->
+            </table>
+            <p class="comment" id="search_monthly_sales"></p>
+        </div>
+        <h3>단골 고객</h3> 
+        <table id="most_visited">
+            <tr>
+                <th>UserID</th>
+                <th>UserName</th>
+                <th>Frequent</th>
+            </tr>
+            <!-- 단골 고객 목록 뜨는 곳 -->
+        </table>
+        <p class="comment" id="search_most_visited"></p>
+    </div>
+    
+
+    <script>
+        const current_path = window.location.pathname;
+        const update = document.getElementById('update')
+        const delete_ = document.getElementById('delete')
+        const store_id = document.getElementById('store_id')
+        const store_name = document.getElementById('store_name')
+        const birthdate = document.getElementById('birthdate')
+        const age = document.getElementById('age')
+        const gender = document.getElementById('gender')
+        const address = document.getElementById('address')
+        const store = document.getElementById('store')
+        const tbody = document.getElementById('tbody')
+        const store_top5 = document.getElementById('store_top5')
+        const item_top5 = document.getElementById('item_top5')
+
+        // nav바에서 페이지 버튼 활성화 -> 페이지 로드할 때마다 확인하여 적용
+        let section = current_path.split('/')[1];
+        const links = document.querySelectorAll('.nav_link');
+        links.forEach(link => {
+            const link_section = link.getAttribute('data-section')
+            if (link_section === section){
+                link.classList.add('active')
+            }
+        })
+
+        const url2 = window.location.href
+        // console.log(url2)
+        const url = window.location.pathname
+        // console.log(url)
+        const last = url.split('/')
+        // console.log(last)
+        const storeid = last[last.length - 1] 
+        // console.log(storeid)
+
+        update.addEventListener('click', () => {
+            console.log({
+                    id: store_id.textContent,
+                    name: store_name.value,
+                    birthdate: birthdate.value,
+                    age: age.value,
+                    gender: gender.value,
+                    address: address.value
+                })
+            fetch(`/api/update_store/${store_id.textContent}`, {
+                method: 'put',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify({
+                    id: store_id.textContent,
+                    name: store_name.value,
+                    birthdate: birthdate.value,
+                    age: age.value,
+                    gender: gender.value,
+                    address: address.value
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    render_store_in_input(data)
+                    alert('스토어 정보가 수정되었습니다.')
+            })})
+
+        delete_.addEventListener('click', () => {
+            fetch(`/api/delete_store/${store_id.textContent}`, {
+                method: 'delete'
+                })
+                .then(response => response.json())
+                .then(data =>{
+                    console.log(data.message)
+                    alert(data.message);
+                    window.location.href = '/stores';
+                }
+                )
+            })
+
+
+        function render_store_in_input(store) {
+            store_id.textContent = store.id
+            store_name.value = store.name
+            birthdate.value = store.birthdate
+            age.value = store.age
+            gender.value = store.gender
+            address.value = store.address
+        }
+
+        // fetch로 쿼리 정보 받아오기
+        fetch(`/api/store_info/${storeid}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                render_store_in_input(data)
+            }
+        )
+        // 스토어의 주문내역 받아오기
+        fetch(`/api/order_history/${storeid}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('주문내역: ',data)
+                if (data.length == 0){
+                    document.getElementById('p_order_history').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (u of data) {
+                        const new_tr = document.createElement('tr')
+                        new_tr.innerHTML = `<td><a href="/orders/info/${u.order_id}">${u.order_id}</td>
+                            <td>${u.ordertime}</td>
+                            <td>${u.store}</td>
+                            <td>${u.item}</td>`
+                            order_history.appendChild(new_tr)
+                        }
+                    }
+            })
+        
+        fetch(`/api/store_top5/${storeid}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.length == 0){
+                    document.getElementById('p_store_top5').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (i of data) {
+                        const new_li = document.createElement('li')
+                        new_li.innerText = `${i.store} : ${i.cnt}번 방문`
+                        store_top5.appendChild(new_li)
+                    }
+                }
+            }
+            )
+        
+        fetch(`/api/item_top5/${storeid}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length == 0){
+                    document.getElementById('p_item_top5').innerText = `주문내역이 없습니다.`
+                } else {
+                    for (i of data) {
+                        const new_li = document.createElement('li')
+                        new_li.innerText = `${i.item} : ${i.cnt}번 구매` 
+                        item_top5.appendChild(new_li)                    
+                    }}
+            })
+
+    </script>
+</body>
+</html>

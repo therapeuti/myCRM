@@ -9,11 +9,11 @@
 <body>
     <nav>
         <a class="nav_link" href="/">Login</a>
-        <a class="nav_link" href="/users">Users</a>
-        <a class="nav_link" href="/stores">Stores</a>
-        <a class="nav_link" href="/orders">Orders</a>
-        <a class="nav_link" href="/items">Items</a>
-        <a class="nav_link" href="/orderitems">Orderitems</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
     </nav>
     <hr>
     <div id="user_container">
@@ -78,6 +78,7 @@
     
 
     <script>
+        const current_path = window.location.pathname;
         const update = document.getElementById('update')
         const delete_ = document.getElementById('delete')
         const user_id = document.getElementById('user_id')
@@ -90,6 +91,16 @@
         const tbody = document.getElementById('tbody')
         const store_top5 = document.getElementById('store_top5')
         const item_top5 = document.getElementById('item_top5')
+
+        // nav바에서 페이지 버튼 활성화 -> 페이지 로드할 때마다 확인하여 적용
+        let section = current_path.split('/')[1];
+        const links = document.querySelectorAll('.nav_link');
+        links.forEach(link => {
+            const link_section = link.getAttribute('data-section')
+            if (link_section === section){
+                link.classList.add('active')
+            }
+        })
 
         const url2 = window.location.href
         // console.log(url2)

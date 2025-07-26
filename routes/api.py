@@ -1,7 +1,14 @@
 from flask import Blueprint, current_app
 from flask import request, jsonify, abort
+from routes.stores import stores_bp
+from routes.orders import orders_bp
+from routes.items import items_bp
+from routes.orderitems import orderitems_bp
 from database.database import *
 from database.users_db import *
+from database.stores_db import *
+from database.items_db import *
+from database.orders_db import *
 import logging
 import math
 
@@ -10,6 +17,12 @@ logging.basicConfig(level=logging.DEBUG,
                     datefmt='%Y-%m-%d %H-%M-%S')
 
 api_bp = Blueprint('api', __name__)
+
+#서브 블루프린트 등록
+api_bp.register_blueprint(stores_bp)
+api_bp.register_blueprint(orders_bp)
+api_bp.register_blueprint(items_bp)
+api_bp.register_blueprint(orderitems_bp)
 
 number_per_page = 10
 @api_bp.route('/users/')
@@ -37,12 +50,12 @@ def get_users():
     logging.debug(f'검색조건: {filtering}')
 
     users, count_users = get_users_list(number_per_page, filtering)
-    total_pages = math.ceil(count_users / number_per_page)
-    if (total_pages != 0) and (page > total_pages):
+    end_page = math.ceil(count_users / number_per_page)
+    if (end_page != 0) and (page > end_page):
         abort(404)
     logging.debug(f'send_user() : {users}')
-    logging.debug(f'전체 사용자 데이터 개수: {count_users}, 전체 페이지 수: {total_pages}')
-    return jsonify({'users':users, 'total_pages':total_pages})
+    logging.debug(f'전체 사용자 데이터 개수: {count_users}, 전체 페이지 수: {end_page}')
+    return jsonify({'users':users, 'end_page':end_page})
 
 @api_bp.route('/user_info/<id>')
 def get_user_info(id):
@@ -87,7 +100,8 @@ def get_store_name_by_type(type):
     logging.debug(store_names)
     return jsonify(store_names)
 
-@api_bp.route('/api/items')
+@api_bp.route('/items')
 def get_items_for_order():
     items = get_items()
     return jsonify(items)
+
