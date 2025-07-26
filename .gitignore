@@ -1,0 +1,22 @@
+.idea
+
+# 파이썬 컴파일된 결과 파일
+
+# /붙이면 폴더란 의미
+__pycache__/  
+# 특정 확장자를 가진 모든 파일
+*.pyc
+
+# 데이터파일
+**/uploads/*
+*.db
+*.sqlite
+*.sqlite3
+*.jpg
+*.png
+*.gif
+*.jpeg
+
+
+# 민감정보 파일
+.env

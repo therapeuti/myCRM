@@ -17,7 +17,10 @@
     </nav>
     <hr>
     <div id="container">
-        <h1>사용자 목록</h1>
+        <div id="users_title">
+            <h1>사용자 목록</h1>
+            <button id="add_user">사용자 추가</button>
+        </div>
         <form>
             <div id="search">
                 <select id="search_field">
@@ -78,6 +81,22 @@
             <button id="end_page">끝</button>
         </div>
     </div>
+    <div id="modal_users" class="modal">
+        <div id="insert_users">
+            <button id="close">X</button>
+            <form action="/signup" method="post" id="modal_form">
+                <h3>사용자 추가</h3><br>
+                <input type="text" name="name" placeholder="이름" required="">
+                <input type="date" name="birthdate" placeholder="생년월일" max="2024-12-31" required="">
+                <select name="gender">
+                    <option value="Female">Female</option>
+                    <option value="Male">male</option>
+                </select>
+                <input type="text" name="address" placeholder="주소" required="">
+                <button id="">사용자 정보 추가하기</button>
+            </form>
+        </div>
+    </div>
             
         
     <script>
@@ -114,6 +133,15 @@
         if (parameters.get('orderby')) {
             orderby.value = parameters.get('orderby')}
 
+        // 사용자 추가 폼 모달창 열기
+        document.getElementById('add_user').addEventListener('click', () => {
+            console.log('모달창 열림?')
+            document.getElementById('modal_users').style.display = 'block';
+        })
+        document.getElementById('close').addEventListener('click', () => {
+            console.log('모달창 닫힘')
+            document.getElementById('modal_users').style.display = 'none';
+        })
         // 검색 조건 폼 제출 
         submit.addEventListener('click', (e)=>{
             input_query.name = search_field.value

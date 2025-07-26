@@ -88,6 +88,7 @@ nav {
 h1 {
     margin-bottom: 20px;
  }
+#users_title,
 form {
     display: flex;
     justify-content: space-between;
@@ -101,6 +102,8 @@ form {
     display: flex;
     justify-content: right;
 }
+
+#add_user,
 #edit_btn button,
 #search select,
 #search input,
@@ -222,3 +225,69 @@ ol {
 #tbody #address {
     width: 250px;
 }
+.modal {
+    display: none;
+    margin: auto;
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 998;
+}
+#close {
+    background-color: transparent;
+    padding: 5px;
+    margin: 2px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    border: none;
+    font-size: 15px;
+    font-style: bold;
+}
+#insert_users{
+    position: relative;
+    top: 100px;
+    margin: auto;
+    width: 360px;
+    height: 450px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    z-index: 999;
+}
+
+#modal_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 0 25px 30px 25px;
+    border-radius: 12px;
+    background-color: #ffffff;
+}
+#modal_form button,
+#modal_form input,
+#modal_form select {
+    width: 200px;
+    margin: 10px;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    transition: border 0.2s ease-in-out;
+    cursor: pointer;
+}
+#modal_form input:focus,
+#modal_form select:focus,
+#modal_form select:focus {
+    outline: none;
+    border-color: #339af0;
+    background-color: white;
+}
+
