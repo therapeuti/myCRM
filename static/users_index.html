@@ -35,6 +35,7 @@
                     <option value="Male">Male</option>
                 </select>
                 <button type="submit" id="submit">검색</button>
+                <button type="button" id="reset">초기화</button>
             </div>
             <div id="order_by">
                 <label> 정렬기준
@@ -84,7 +85,7 @@
     <div id="modal_users" class="modal">
         <div id="insert_users">
             <button id="close">X</button>
-            <form action="/signup" method="post" id="modal_form">
+            <form action="/users/add_user" method="post" id="modal_form">
                 <h3>사용자 추가</h3><br>
                 <input type="text" name="name" placeholder="이름" required="">
                 <input type="date" name="birthdate" placeholder="생년월일" max="2024-12-31" required="">
@@ -103,8 +104,9 @@
         const current_path = window.location.pathname;
         const search_field = document.getElementById('search_field');
         const input_query = document.getElementById('input_query');
-        const submit = document.getElementById('submit');
         const gender = document.getElementById('gender');
+        const submit = document.getElementById('submit');
+        const reset = document.getElementById('reset');
         const orderby = document.getElementById('orderby');
         
         // nav바에서 페이지 버튼 활성화 -> 페이지 로드할 때마다 확인하여 적용
@@ -145,6 +147,12 @@
         // 검색 조건 폼 제출 
         submit.addEventListener('click', (e)=>{
             input_query.name = search_field.value
+        })
+        // 검색 내용 초기화
+        reset.addEventListener('click', (e)=>{
+            search_field.value = ''
+            input_query.value = ''
+            gender.value = ''
         })
 
         // 정렬 이벤트 리스너 
