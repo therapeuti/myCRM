@@ -44,9 +44,6 @@ def get_stores():
     store_types = get_store_type()
     return jsonify({'stores': stores, 'end_page': end_page, 'store_types': store_types})
 
-
-
-#  수정
 @stores_bp.route('/store_info/<id>')
 def get_store_info(id):
     logging.debug('스토어 정보 가져오기')

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 상세정보</title>
+    <link rel="stylesheet" href="/static/css/orders.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="order_container">
+        <a href="javascript:history.back()" class="back_link">뒤로가기</a>
+        <!-- 주문 아이디, 주문 시간 정보 -->
+        <h4 id="order_id"></h4>
+        <h4 id="ordertime"></h4>
+
+        <table id="order">
+            <thead>
+                <th>Store_ID</th>
+                <th>Store Name</th>
+                <th>User_ID</th>
+                <th>User Name</th>
+            </thead>
+            <tbody id="tbody">
+                <!-- 주문 매장과 사용자 정보 -->
+            </tbody>
+        </table>
+        <h4>주문내역</h4>
+        <table id="orderitems">
+            <tr>
+                <th>Item ID</th>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+            <!-- 주문한 아이템 정보 -->
+        </table>
+        <p id="search_orderitmes" class="comment"></p>
+
+        
+    </div>
+    <script src="/static/js/order_info.js">
+    </script>
+</body>
+</html>

@@ -19,20 +19,20 @@ def get_orders_list(count, filtering):
 
     conn = get_connect()
     cur = conn.cursor()
-    # 전체 사용자 목록 가져오기 (필터링 조건 없음)
+    # 전체 주문 목록 가져오기 (필터링 조건 없음)
     if len(filter_keys) == 0:
         logging.debug(f'order by 조건: {filtering["orderby"]}')
-        # 쿼리문 실행 - 사용자 목록 가져오기
+        # 쿼리문 실행 - 주문 목록 가져오기
         sql_query = f'SELECT * FROM orders ORDER BY {filtering["orderby"]} LIMIT ? OFFSET ?'
         cur.execute(sql_query, (count, offset_num))
         orders = cur.fetchall()
         orders_dict = [dict(s) for s in orders]
-        # 쿼리문 실행 - 사용자 데이터 개수 가져오기
+        # 쿼리문 실행 - 주문 데이터 개수 가져오기
         cur.execute('SELECT COUNT(*) from orders')
         count_orders = cur.fetchone()[0]
         logging.debug(orders_dict)
         logging.debug(count_orders)
-    # 필터링 조건에 따른 사용자 목록 가져오기
+    # 필터링 조건에 따른 주문 목록 가져오기
     else:    
         where_keys = ' AND '.join(filter_keys)
         where = 'WHERE ' + where_keys
@@ -43,7 +43,7 @@ def get_orders_list(count, filtering):
         # 필터링한 데이터 가져오기
         cur.execute(sql_query, parameter_tuple)
         orders = cur.fetchall()
-        logging.debug(f'사용자 목록 가져온건 맞음? {orders}')
+        logging.debug(f'주문 목록 : {orders}')
         # 데이터 개수 가져오기
         logging.debug(sql_count_query)
         logging.debug(parameter_count_tuple)
@@ -53,13 +53,12 @@ def get_orders_list(count, filtering):
     cur.close()
     conn.close()
 
-    # 검색된 사용자가 없는 경우... 한 명만 있는 경우... 여러 명인 경우...
-    logging.debug(f'전체 사용자 수: {count_orders}')
+    logging.debug(f'전체 주문 수: {count_orders}')
     if count_orders == 0:
         orders_dict = []
-        logging.debug('검색 조건에 해당하는 사용자를 찾을 수 없습니다.')
+        logging.debug('검색 조건에 해당하는 주문정보를 찾을 수 없습니다.')
     else:
-        logging.debug(f'첫번째 스토어 정보만 가져옴. -> {orders[0]}')
+        logging.debug(f'첫번째 주문정보만 가져옴. -> {orders[0]}')
         orders_dict = [dict(o) for o in orders]
         logging.debug(orders_dict)
         logging.debug(count_orders)
@@ -78,15 +77,12 @@ def get_order_by_id(id):
                 WHERE o.id=?
                 GROUP BY order_id
                 ''',(id ,))
-    order = cur.fetchall()
+    order = cur.fetchone()
     cur.close()
     conn.close()
-    if not order:
-        order = '아이템 정보가 없음'
-        return order
-    else:
-        order_dict = [dict(o) for o in order]
-        return order_dict
+    order = dict(order)
+    logging.debug(order)
+    return order
 
 def get_items_in_order(id):
     conn = get_connect()
@@ -103,11 +99,8 @@ def get_items_in_order(id):
     items_in_order = cur.fetchall()
     cur.close()
     conn.close()
-    if not items_in_order:
-        items_in_order = '아이템 정보가 없음'
-        return items_in_order
-    else:
-        items_in_order = [dict(i) for i in items_in_order]
+    items_in_order = [dict(i) for i in items_in_order]
+    logging.debug(items_in_order)
     return items_in_order
 
 

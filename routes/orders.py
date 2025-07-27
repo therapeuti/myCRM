@@ -40,17 +40,18 @@ def get_orders():
         abort(404)
     return jsonify({'orders': orders, 'end_page': end_page})
 
-
-
-#  수정
-@orders_bp.route('/info/<id>')
-def order_info(id):
+@orders_bp.route('/order_info/<id>')
+def get_order_info(id):
     logging.debug('주문 정보 가져오기')
-
     order = get_order_by_id(id)
     logging.debug(order)
+    return jsonify(order)
+
+
+@orders_bp.route('/orders/items/<id>')
+def get_orders_items(id):
+    logging.debug('주문아이디에 해당하는 아이템들 가져오기')
     items_in_order = get_items_in_order(id)
     logging.debug(items_in_order)
-    return jsonify('order_info.html', order=order[0], items_in_order=items_in_order)
-
+    return jsonify(items_in_order)
 

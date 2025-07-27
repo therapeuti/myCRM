@@ -81,13 +81,13 @@ nav {
     left: 40px;
     color:#868e96;
 }
-#order_history_container {
-    max-height: 500px;
-    overflow-y: auto;
-}
+
 h1 {
     margin-bottom: 20px;
- }
+}
+#order_id {
+    margin-top: 20px;
+}
 #orders_title,
 form {
     display: flex;
@@ -124,7 +124,7 @@ form {
     background-color: white;
 }
 #order,
-#order_history,
+#orderitems,
 #order_table {
     width: 100%;
     border-collapse: collapse;
@@ -133,21 +133,22 @@ form {
 }
 #order th,
 #order td,
-#order_history th,
-#order_history td,
+#orderitems th,
+#orderitems td,
 #order_table th,
 #order_table td {
     padding: 12px 8px;
     border-bottom: 1px solid #dee2e6;
 }
 #order th,
-#order_history th,
+#orderitems th,
 #order_table th {
     text-align: center;
     background-color: #f1f3f5;
     font-weight: 600;
 }
-#order_history td a,
+#order td a,
+#orderitems td a,
 #order_table td a {
     color: #1c7ed6;
     text-decoration: none;
