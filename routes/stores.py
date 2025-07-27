@@ -52,6 +52,16 @@ def get_store_info(id):
     logging.debug('스토어 정보 가져오기')
     # id에 맞는 해당 스토어 정보 데이터베이스에서 가져와서 전송
     store = get_store_by_id(id)
+    store_types = get_store_type()
+    logging.debug(store)
+    return jsonify({'store': store, 'store_types': store_types})
+
+@stores_bp.route('/store/monthly_sales/<id>')
+def get_stores_monthly_sales(id):
     monthly_sales = get_monthly_sales(id)
+    return jsonify(monthly_sales)
+
+@stores_bp.route('/store/most_visited/<id>')
+def get_stores_most_visited(id):
     most_visited = get_most_visited(id)
-    return jsonify({'store': store, 'monthly_sales': monthly_sales, 'most_visited': most_visited})
+    return jsonify(most_visited)

@@ -81,7 +81,8 @@ nav {
     left: 40px;
     color:#868e96;
 }
-#order_history_container {
+#most_visited_container,
+#monthly_sales_container {
     max-height: 500px;
     overflow-y: auto;
 }
@@ -124,7 +125,8 @@ form {
     background-color: white;
 }
 #store,
-#order_history,
+#monthly_sales,
+#most_visited,
 #store_table {
     width: 100%;
     border-collapse: collapse;
@@ -133,21 +135,23 @@ form {
 }
 #store th,
 #store td,
-#order_history th,
-#order_history td,
+#monthly_sales th,
+#monthly_sales td,
+#most_visited th,
+#most_visited td,
 #store_table th,
 #store_table td {
     padding: 12px 8px;
     border-bottom: 1px solid #dee2e6;
 }
 #store th,
-#order_history th,
+#monthly_sales th,
+#most_visited th,
 #store_table th {
     text-align: center;
     background-color: #f1f3f5;
     font-weight: 600;
 }
-#order_history td a,
 #store_table td a {
     color: #1c7ed6;
     text-decoration: none;
@@ -161,12 +165,7 @@ form {
     color: #868e96;
     font-style: italic;
 }
-.top5 {
-    margin-top: 15px;
-    text-align: left;
-    color: #868e96;
-    font-style: italic;
-}
+
 #btn-container {
     display: flex;
     justify-content: center;
@@ -211,19 +210,23 @@ ol {
     justify-content: space-between;
     align-items: center;
 }
+#tbody #store_type {
+    width: 110px;
+}
 #tbody #store_name {
-    width: 70px;
-    text-align: center;
-}
-#tbody #birthdate {
-    text-align: center;
-}
-#tbody #age {
-    width: 40px;
-    text-align: center;
+    width: 150px;
 }
 #tbody #address {
     width: 250px;
+}
+#tbody:nth-child(2),
+#tbody:nth-child(3),
+#tbody:nth-child(4) {
+    text-align: center;
+}
+#most_visited td,
+#monthly_sales td {
+    text-align: center;
 }
 .modal {
     display: none;

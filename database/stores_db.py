@@ -62,6 +62,7 @@ def get_stores_list(count, filtering):
 
     return stores_dict, count_stores
 
+#  스토어 타입 정보만 가져오기
 def get_store_type():
     conn = get_connect()
     cur = conn.cursor()
@@ -74,6 +75,7 @@ def get_store_type():
     conn.close()
     return type_values
 
+# 특정 스토어 타입의 매장이름들만 가져오기
 def get_store_name(type):
     conn = get_connect()
     cur = conn.cursor()
@@ -105,7 +107,7 @@ def get_monthly_sales(id):
     conn = get_connect()
     cur = conn.cursor()
     cur.execute('''
-                SELECT strftime('%Y-%m', o.ordertime) as monthly, sum(i.price) as reevenue, count(*) as cnt
+                SELECT strftime('%Y-%m', o.ordertime) as monthly, sum(i.price) as revenue, count(*) as cnt
                 FROM stores s
                 JOIN orders o ON s.id=o.store_id
                 JOIN orderitems oi ON o.id=oi.order_id
@@ -117,10 +119,7 @@ def get_monthly_sales(id):
     monthly_sales = cur.fetchall()
     cur.close()
     conn.close()
-    if not monthly_sales:
-        monthly_sales = '검색된 내용 없음'
-    else:
-        monthly_sales = [dict(m) for m in monthly_sales]
+    monthly_sales = [dict(m) for m in monthly_sales]
     return monthly_sales
 
 def get_most_visited(id):
@@ -139,10 +138,7 @@ def get_most_visited(id):
     most_visited = cur.fetchall()
     cur.close()
     conn.close()
-    if not most_visited:
-        most_visited = '검색된 내용 없음'
-    else:
-        most_visited = [dict(m) for m in most_visited]
+    most_visited = [dict(m) for m in most_visited]
     return most_visited
 
 

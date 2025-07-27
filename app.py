@@ -63,7 +63,7 @@ def add_item():
     logging.debug(f'추가된 아이템: {new_item}')
     return redirect(url_for('item_info', id=i_id))
 
-@app.route('/store_info/<id>')
+@app.route('/stores/info/<id>')
 def store_info(id):
     logging.debug('스토어 상세 페이지')
     return send_from_directory(app.static_folder, 'store_info.html')
