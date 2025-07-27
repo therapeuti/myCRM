@@ -73,7 +73,6 @@ def get_order_by_id(id):
                 JOIN orderitems oi ON o.id=oi.order_id
                 JOIN stores s ON o.store_id=s.id
                 JOIN users u ON o.user_id=u.id 
-                JOIN items i ON i.id=oi.item_id
                 WHERE o.id=?
                 GROUP BY order_id
                 ''',(id ,))
@@ -91,8 +90,6 @@ def get_items_in_order(id):
                 SELECT i.id as item_id, i.name as item, i.price
                 FROM orders o
                 JOIN orderitems oi ON o.id=oi.order_id
-                JOIN stores s ON o.store_id=s.id
-                JOIN users u ON o.user_id=u.id 
                 JOIN items i ON i.id=oi.item_id
                 WHERE o.id=?
                 ''',(id ,))

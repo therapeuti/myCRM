@@ -47,7 +47,6 @@ def get_order_info(id):
     logging.debug(order)
     return jsonify(order)
 
-
 @orders_bp.route('/orders/items/<id>')
 def get_orders_items(id):
     logging.debug('주문아이디에 해당하는 아이템들 가져오기')

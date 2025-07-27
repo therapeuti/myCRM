@@ -2,7 +2,6 @@ from flask import Blueprint
 from flask import request,jsonify, abort
 from database.database import *
 from database.items_db import *
-import uuid
 import math
 
 logging.basicConfig(level=logging.DEBUG,
@@ -37,16 +36,31 @@ def get_items():
     item_type = get_item_type()
     return jsonify({'items': items, 'end_page': end_page, 'item_types': item_type})
 
-
-
-#수정
 @items_bp.route('/item_info/<id>')
 def get_item_info(id):
     logging.debug('아이템 정보 요청')
     item = get_item_by_id(id)
+    item_types = get_item_type()
+    return jsonify({'item': item, 'item_types':item_types})
+
+@items_bp.route('/items/monthly_sales/<id>')
+def get_items_monthly_sales(id):
     item_sales = get_item_sales(id)
-    logging.debug(item_sales)
-    # 그래프 그릴 수 있게 데이터 변경..
-    return jsonify('item_info.html', item=item, item_sales=item_sales)
+    logging.debug(f'최근 1년간 월간 매출액 : {item_sales}')
+    return jsonify(item_sales)
 
+@items_bp.route('/items/update_item/<id>', methods=['PUT'])
+def update_item_info(id):
+    item = request.get_json()
+    logging.debug(f'수정 요청한 아이템 정보: {item}')
+    update_item(item)
+    item_info = get_item_by_id(id)
+    logging.debug(f'수정된 아이템 정보 : {item_info}')
+    return jsonify(item_info)
 
+@items_bp.route('/items/delete_item/<id>', methods=['DELETE'])
+def delete_item(id):
+    delete_item_by_id(id)
+    deleted_item = get_item_by_id(id)
+    logging.debug(f'삭제된 아이템 : {deleted_item}')
+    return jsonify({'message': f'아이템ID {id}의 정보가 삭제되었습니다.'})

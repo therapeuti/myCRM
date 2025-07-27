@@ -62,3 +62,20 @@ def get_stores_monthly_sales(id):
 def get_stores_most_visited(id):
     most_visited = get_most_visited(id)
     return jsonify(most_visited)
+
+
+@stores_bp.route('/stores/update_store/<id>', methods=['PUT'])
+def update_store_info(id):
+    store = request.get_json()
+    logging.debug(f'수정 요청한 스토어 정보: {store}')
+    update_store(store)
+    store_info = get_store_by_id(id)
+    logging.debug(f'수정된 스토어 정보 : {store_info}')
+    return jsonify(store_info)
+
+@stores_bp.route('/stores/delete_store/<id>', methods=['DELETE'])
+def delete_store_info(id):
+    delete_store_by_id(id)
+    deleted_store = get_store_by_id(id)
+    logging.debug(f'삭제된 스토어 : {deleted_store}')
+    return jsonify({'message': f'스토어ID {id}의 정보가 삭제되었습니다.'})

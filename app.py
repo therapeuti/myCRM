@@ -73,7 +73,7 @@ def order_info(id):
     logging.debug('오더 상세 페이지')
     return send_from_directory(app.static_folder, 'order_info.html')
 
-@app.route('/item_info/<id>')
+@app.route('/items/info/<id>')
 def item_info(id):
     return send_from_directory(app.static_folder, 'item_info.html')
 

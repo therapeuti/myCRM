@@ -12,41 +12,39 @@ const links = document.querySelectorAll('.nav_link');
 links.forEach(link => {
     const link_section = link.getAttribute('data-section')
     if (link_section === section){
-        link.classList.add('active')
+        link.classList.add('active');
     }
 })
 
 // 검색어 유지
 const parameters = new URLSearchParams(window.location.search);
 if (parameters.get('id')) {
-    search_field.value = 'id'
-    input_query.value = parameters.get('id')}
+    search_field.value = 'id';
+    input_query.value = parameters.get('id')};
 if (parameters.get('name')) {
-    search_field.value = 'name'
-    input_query.value = parameters.get('name')}
+    search_field.value = 'name';
+    input_query.value = parameters.get('name')};
 if (parameters.get('type')) {
-    item_type.value = parameters.get('type')}
+    item_type.value = parameters.get('type')};
 if (parameters.get('orderby')) {
-    orderby.value = parameters.get('orderby')}
+    orderby.value = parameters.get('orderby')};
 
 // 아이템 추가 폼 모달창 열기
 document.getElementById('add_item').addEventListener('click', () => {
-    console.log('모달창 열림?')
     document.getElementById('modal_items').style.display = 'block';
 })
 document.getElementById('close').addEventListener('click', () => {
-    console.log('모달창 닫힘')
     document.getElementById('modal_items').style.display = 'none';
 })
 // 검색 조건 폼 제출 
 submit.addEventListener('click', (e)=>{
-    input_query.name = search_field.value
+    input_query.name = search_field.value;
 })
 // 검색 내용 초기화
 reset.addEventListener('click', (e)=>{
-    search_field.value = ''
-    input_query.value = ''
-    item_type.value = ''
+    search_field.value = '';
+    input_query.value = '';
+    item_type.value = '';
 })
 
 // 정렬 이벤트 리스너 
@@ -58,30 +56,30 @@ orderby.addEventListener('change', (e)=>{
 })
 
 // 페이지 이동 버튼 이벤트 리스너
-const start_btn = document.getElementById('start_page')
-const prev10 = document.getElementById('prev10')
-const prev = document.getElementById('previous')
-const pages = document.getElementById('pagination')
-const next = document.getElementById('next')
-const next10 = document.getElementById('next10')
-const end_btn = document.getElementById('end_page')
+const start_btn = document.getElementById('start_page');
+const prev10 = document.getElementById('prev10');
+const prev = document.getElementById('previous');
+const pages = document.getElementById('pagination');
+const next = document.getElementById('next');
+const next10 = document.getElementById('next10');
+const end_btn = document.getElementById('end_page');
 
 start_btn.addEventListener('click', ()=>{
     change_page(1)
 })
 end_btn.addEventListener('click', ()=>{
-    fetch_users_data()
+    fetch_items_data()
         .then(data =>{
-            const end = data.end_page
+            const end = data.end_page;
             change_page(end)
         })
 })
 prev.addEventListener('click', ()=>{
-    const current_page = get_current_page()
+    const current_page = get_current_page();
     change_page(current_page - 1)
 })
 prev10.addEventListener('click', ()=>{
-    const current_page = get_current_page()
+    const current_page = get_current_page();
     change_page(current_page - 10)
 })
 next.addEventListener('click', ()=>{
@@ -90,9 +88,9 @@ next.addEventListener('click', ()=>{
 })
 next10.addEventListener('click', ()=>{
     const current_page = get_current_page()
-    fetch_users_data()
+    fetch_items_data()
         .then(data =>{
-            const end = data.end_page
+            const end = data.end_page;
             if ((current_page + 10)> end){
                 change_page(end)
             } else {
@@ -156,16 +154,16 @@ function render_item(item) {
 function render_items(items) {
     console.log('-----render_items 함수 실행')
     console.log('아이템 데이터 수: ', items.length)
-    const user_list = document.getElementById('tbody')
+    const item_list = document.getElementById('tbody')
     const search_result = document.getElementById('search_result')
-    user_list.innerHTML = ''
+    item_list.innerHTML = ''
     search_result.textContent = ''
     if (items.length == 0) {
         search_result.textContent = "검색 조건에 해당하는 아이템를 찾을 수 없습니다."
     } else {
         for (u of items) {
             const new_tr = render_item(u)
-            user_list.appendChild(new_tr)
+            item_list.appendChild(new_tr)
         }
     }
 }
@@ -262,16 +260,27 @@ function fetch_items_data() {
 
 // 데이터베이스에서 가져온 아이템 타입 추가하기
 function load_item_type(item_types) {
-    const type_in_modal = document.getElementById('modal_item_type')
-    for (type of item_types) {
-        const opt1 = document.createElement('option')
-        const opt2 = document.createElement('option')
-        opt1.value = type
-        opt2.value = type
-        opt1.textContent = type
-        opt2.textContent = type
-        item_type.appendChild(opt1)
-        type_in_modal.appendChild(opt2)
+    const type_in_modal = document.getElementById('modal_item_type');
+    const item_type = document.getElementById('item_type');
+    type_in_modal.innerHTML = '';
+    item_type.innerHTML = '';
+    const opt11 = document.createElement('option');
+    const opt22 = document.createElement('option');
+    opt11.innerText = '아이템 종류 선택';
+    opt22.innerText = '아이템 종류 선택';
+    opt11.value = ''
+    opt22.value = ''
+    type_in_modal.appendChild(opt11);
+    item_type.appendChild(opt22);
+    for (const type of item_types) {
+        const opt1 = document.createElement('option');
+        const opt2 = document.createElement('option');
+        opt1.value = type;
+        opt1.textContent = type;
+        opt2.value = type;
+        opt2.textContent = type;
+        item_type.appendChild(opt1);
+        type_in_modal.appendChild(opt2);
     }
 }
 

@@ -81,7 +81,7 @@ nav {
     left: 40px;
     color:#868e96;
 }
-#order_history_container {
+#item_sales_container {
     max-height: 500px;
     overflow-y: auto;
 }
@@ -124,7 +124,7 @@ form {
     background-color: white;
 }
 #item,
-#order_history,
+#item_sales,
 #item_table {
     width: 100%;
     border-collapse: collapse;
@@ -133,21 +133,21 @@ form {
 }
 #item th,
 #item td,
-#order_history th,
-#order_history td,
+#item_sales th,
+#item_sales td,
 #item_table th,
 #item_table td {
     padding: 12px 8px;
     border-bottom: 1px solid #dee2e6;
 }
 #item th,
-#order_history th,
+#item_sales th,
 #item_table th {
     text-align: center;
     background-color: #f1f3f5;
     font-weight: 600;
 }
-#order_history td a,
+#item_sales td a,
 #item_table td a {
     color: #1c7ed6;
     text-decoration: none;
@@ -211,19 +211,21 @@ ol {
     justify-content: space-between;
     align-items: center;
 }
+#chart,
+#tbody #item_type,
 #tbody #item_name {
-    width: 70px;
+    width: 120px;
+    text-align: center;
+    }
+#tbody #price {
+    width: 90px;
     text-align: center;
 }
-#tbody #birthdate {
+#item_sales td,
+#tbody:nth-child(2),
+#tbody:nth-child(3),
+#tbody:nth-child(4) {
     text-align: center;
-}
-#tbody #age {
-    width: 40px;
-    text-align: center;
-}
-#tbody #address {
-    width: 250px;
 }
 .modal {
     display: none;

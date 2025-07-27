@@ -114,11 +114,8 @@ def get_item_sales(id):
     item_sales = cur.fetchall()
     cur.close()
     conn.close()
-    if not item_sales:
-        item_sales = '검색된 내용 없음'
-    else:
-        item_sales = [dict(i) for i in item_sales]
-        item_sales.reverse()
+    item_sales = [dict(i) for i in item_sales]
+    item_sales.reverse()
     return item_sales
 
 
@@ -134,3 +131,25 @@ def insert_item(item):
     cur.close()
     conn.close()
     return new_item
+
+def update_item(item):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('''
+                UPDATE items 
+                SET  type=?, name=?, price=? 
+                WHERE id=?
+                ''',
+                (item['type'], item['name'], item['price'], item['id']))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def delete_item_by_id(id):
+    conn = get_connect()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM items WHERE id=?', (id, ))
+    conn.commit()
+    cur.close()
+    conn.close()
+    

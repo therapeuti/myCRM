@@ -40,7 +40,7 @@
                 <td id="item_id"></td>
                 <td><select id="item_type"></select></td>
                 <td><input type="text" id="item_name"></td>
-                <td><input type="text" id="price"></td>
+                <td><input type="text" id="price">원</td>
             </tr>
         </tbody>
         </table>
@@ -54,157 +54,15 @@
             <!-- 최근 1년간 월간 매출액 뜨는 곳 -->
             </table>
             <p class="comment" id="search_monthly_sales"></p>
-        </div>
-        <h3>단골 고객</h3> 
-        <table id="most_visited">
-            <tr>
-                <th>UserID</th>
-                <th>UserName</th>
-                <th>Frequent</th>
-            </tr>
-            <!-- 단골 고객 목록 뜨는 곳 -->
-        </table>
-        <p class="comment" id="search_most_visited"></p>
+        
         <h3>월별 매출액 그래프</h3>
         <div>
             <canvas id="chart"></canvas>
         </div>
     </div>
-    
-
-    <script>
-        const current_path = window.location.pathname;
-        const update = document.getElementById('update')
-        const delete_ = document.getElementById('delete')
-        const item_id = document.getElementById('item_id')
-        const item_name = document.getElementById('item_name')
-        const item_type = document.getElementById('item_type')
-        const price = document.getElementById('price')
-        const item = document.getElementById('item')
-        const tbody = document.getElementById('tbody')
-
-        // nav바에서 페이지 버튼 활성화 -> 페이지 로드할 때마다 확인하여 적용
-        let section = current_path.split('/')[1];
-        const links = document.querySelectorAll('.nav_link');
-        links.forEach(link => {
-            const link_section = link.getAttribute('data-section')
-            if (link_section === section){
-                link.classList.add('active')
-            }
-        })
-
-        const url2 = window.location.href
-        // console.log(url2)
-        const url = window.location.pathname
-        // console.log(url)
-        const last = url.split('/')
-        // console.log(last)
-        const itemid = last[last.length - 1] 
-        // console.log(itemid)
-
-        update.addEventListener('click', () => {
-            console.log({
-                    id: item_id.textContent,
-                    name: item_name.value,
-                    birthdate: birthdate.value,
-                    age: age.value,
-                    gender: gender.value,
-                    address: address.value
-                })
-            fetch(`/api/update_item/${item_id.textContent}`, {
-                method: 'put',
-                headers: {'content-type': 'application/json'},
-                body: JSON.stringify({
-                    id: item_id.textContent,
-                    name: item_name.value,
-                    item_type: itme_type.value,
-                    price: price.value,
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    render_item_in_input(data)
-                    alert('아이템 정보가 수정되었습니다.')
-            })})
-
-        delete_.addEventListener('click', () => {
-            fetch(`/api/delete_item/${item_id.textContent}`, {
-                method: 'delete'
-                })
-                .then(response => response.json())
-                .then(data =>{
-                    console.log(data.message)
-                    alert(data.message);
-                    window.location.href = '/items';
-                }
-                )
-            })
-
-
-        function render_item_in_input(item) {
-            item_id.textContent = item.id
-            item_name.value = item.name
-            item_type.value = item.type
-            price.value = item.price
-        }
-
-        // fetch로 쿼리 정보 받아오기
-        fetch(`/api/item_info/${itemid}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                render_item_in_input(data)
-            }
-        )
-        // // 아이템의 주문내역 받아오기
-        // fetch(`/api/order_history/${itemid}`)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log('주문내역: ',data)
-        //         if (data.length == 0){
-        //             document.getElementById('p_order_history').innerText = `주문내역이 없습니다.`
-        //         } else {
-        //             for (u of data) {
-        //                 const new_tr = document.createElement('tr')
-        //                 new_tr.innerHTML = `<td><a href="/orders/info/${u.order_id}">${u.order_id}</td>
-        //                     <td>${u.ordertime}</td>
-        //                     <td>${u.item}</td>
-        //                     <td>${u.item}</td>`
-        //                     order_history.appendChild(new_tr)
-        //                 }
-        //             }
-        //     })
-        
-        // fetch(`/api/item_top5/${itemid}`)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log(data)
-        //         if (data.length == 0){
-        //             document.getElementById('p_item_top5').innerText = `주문내역이 없습니다.`
-        //         } else {
-        //             for (i of data) {
-        //                 const new_li = document.createElement('li')
-        //                 new_li.innerText = `${i.item} : ${i.cnt}번 방문`
-        //                 item_top5.appendChild(new_li)
-        //             }
-        //         }
-        //     }
-        //     )
-        
-        // fetch(`/api/item_top5/${itemid}`)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         if (data.length == 0){
-        //             document.getElementById('p_item_top5').innerText = `주문내역이 없습니다.`
-        //         } else {
-        //             for (i of data) {
-        //                 const new_li = document.createElement('li')
-        //                 new_li.innerText = `${i.item} : ${i.cnt}번 구매` 
-        //                 item_top5.appendChild(new_li)                    
-        //             }}
-        //     })
-
+    <script src="/static/js/item_info.js">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 </html>

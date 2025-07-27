@@ -73,7 +73,7 @@ start_btn.addEventListener('click', ()=>{
     change_page(1)
 })
 end_btn.addEventListener('click', ()=>{
-    fetch_users_data()
+    fetch_stores_data()
         .then(data =>{
             const end = data.end_page
             change_page(end)
@@ -93,7 +93,7 @@ next.addEventListener('click', ()=>{
 })
 next10.addEventListener('click', ()=>{
     const current_page = get_current_page()
-    fetch_users_data()
+    fetch_stores_data()
         .then(data =>{
             const end = data.end_page
             if ((current_page + 10)> end){
@@ -159,16 +159,16 @@ function render_store(store) {
 function render_stores(stores) {
     console.log('-----render_stores 함수 실행')
     console.log('스토어 데이터 수: ', stores.length)
-    const user_list = document.getElementById('tbody')
+    const store_list = document.getElementById('tbody')
     const search_result = document.getElementById('search_result')
-    user_list.innerHTML = ''
+    store_list.innerHTML = ''
     search_result.textContent = ''
     if (stores.length == 0) {
         search_result.textContent = "검색 조건에 해당하는 스토어를 찾을 수 없습니다."
     } else {
         for (u of stores) {
             const new_tr = render_store(u)
-            user_list.appendChild(new_tr)
+            store_list.appendChild(new_tr)
         }
     }
 }
@@ -267,16 +267,27 @@ function fetch_stores_data() {
 
 // 데이터베이스에서 가져온 스토어 타입 추가하기
 function load_store_type(store_types) {
-    const type_in_modal = document.getElementById('modal_store_type')
+    const store_type = document.getElementById('store_type');
+    const type_in_modal = document.getElementById('modal_store_type');
+    store_type.innerHTML = '';
+    type_in_modal.innerHTML = '';
+    const opt1 = document.createElement('option');
+    const opt2 = document.createElement('option');
+    opt1.innerText = '매장 타입 선택';
+    opt2.innerText = '매장 타입 선택';
+    opt1.value = '';
+    opt2.value = '';
+    store_type.appendChild(opt1);
+    type_in_modal.appendChild(opt2);
     for (type of store_types) {
-        const opt1 = document.createElement('option')
-        const opt2 = document.createElement('option')
-        opt1.value = type
-        opt2.value = type
-        opt1.textContent = type
-        opt2.textContent = type
-        store_type.appendChild(opt1)
-        type_in_modal.appendChild(opt2)
+        const opt1 = document.createElement('option');
+        const opt2 = document.createElement('option');
+        opt1.value = type;
+        opt2.value = type;
+        opt1.textContent = type;
+        opt2.textContent = type;
+        store_type.appendChild(opt1);
+        type_in_modal.appendChild(opt2);
     }
 }
 

@@ -149,11 +149,6 @@ def get_item_top5(id):
     cur.close()
     conn.close()
     item_top5 = [dict(s) for s in item_top5]
-    # if not item_top5:
-    #     item_top5 = '검색 결과 없음'
-    # else:
-    #     item_top5 = [dict(s) for s in item_top5]
-    #     logging.debug(item_top5)
     return item_top5
 
 def update_user(user):

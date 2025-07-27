@@ -73,7 +73,7 @@ def update_user_info(id):
     return jsonify(user_info)
 
 @api_bp.route('/delete_user/<id>', methods=['DELETE'])
-def delete_user(id):
+def delete_user_info(id):
     delete_user_by_id(id)
     user = get_user_by_id(id)
     logging.debug(user)

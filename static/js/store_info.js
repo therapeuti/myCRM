@@ -32,13 +32,13 @@ update.addEventListener('click', () => {
             name: store_name.value,
             address: address.value
         })
-    fetch(`/api/update_store/${store_id.textContent}`, {
+    fetch(`/api/stores/update_store/${store_id.textContent}`, {
         method: 'put',
         headers: {'content-type': 'application/json'},
         body: JSON.stringify({
             id: store_id.textContent,
             name: store_name.value,
-            type: type.value,
+            type: store_type.value,
             address: address.value
         })
     })
@@ -50,7 +50,7 @@ update.addEventListener('click', () => {
     })})
 
 delete_.addEventListener('click', () => {
-    fetch(`/api/delete_store/${store_id.textContent}`, {
+    fetch(`/api/stores/delete_store/${store_id.textContent}`, {
         method: 'delete'
         })
         .then(response => response.json())

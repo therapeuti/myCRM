@@ -95,13 +95,9 @@ def get_store_by_id(id):
     store = cur.fetchone()
     cur.close()
     conn.close()
-    if not store:
-        store = '스토어 정보가 없음'
-        return store
-    else:
-        logging.debug(dict(store))
-        store_dict = dict(store)
-        return store_dict
+    logging.debug(dict(store))
+    store_dict = dict(store)
+    return store_dict
 
 def get_monthly_sales(id):
     conn = get_connect()
