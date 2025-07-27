@@ -20,18 +20,11 @@ links.forEach(link => {
     }
 })
 
-const url2 = window.location.href
 const url = window.location.pathname
 const last = url.split('/')
 const storeid = last[last.length - 1] 
 
 update.addEventListener('click', () => {
-    console.log({
-            id: store_id.textContent,
-            type: store_type.value,
-            name: store_name.value,
-            address: address.value
-        })
     fetch(`/api/stores/update_store/${store_id.textContent}`, {
         method: 'put',
         headers: {'content-type': 'application/json'},

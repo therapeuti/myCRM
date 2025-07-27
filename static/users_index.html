@@ -61,7 +61,7 @@
                 <th>Address</th>
             </tr>
         </thead>
-        <tbody id="tbody">
+        <tbody id="users_tbody">
             <!-- 사용자 정보 뜨는 곳 -->
         </tbody>
     </table>
@@ -85,7 +85,7 @@
     <div id="modal_users" class="modal">
         <div id="insert_users">
             <button id="close">X</button>
-            <form action="/users/add_user" method="post" id="modal_form">
+            <form action="/api/add_user" method="post" id="modal_form">
                 <h3>사용자 추가</h3><br>
                 <input type="text" name="name" placeholder="이름" required="">
                 <input type="date" name="birthdate" placeholder="생년월일" max="2024-12-31" required="">

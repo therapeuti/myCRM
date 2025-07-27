@@ -78,6 +78,7 @@ end_btn.addEventListener('click', ()=>{
     console.log('마지막 페이지 버튼 누름')
     fetch_users_data()
         .then(data =>{
+            const end = data.end_page
             change_page(end)
         })
 })
@@ -97,6 +98,7 @@ next10.addEventListener('click', ()=>{
     const current_page = get_current_page()
     fetch_users_data()
         .then(data =>{
+            const end = data.end_page
             if ((current_page + 10)> end){
                 change_page(end)
             } else {
@@ -160,7 +162,7 @@ function render_user(user) {
 function render_users(users) {
     console.log('-----render_users 함수 실행')
     console.log('사용자 데이터 수: ', users.length)
-    const user_list = document.getElementById('tbody')
+    const user_list = document.getElementById('users_tbody')
     const search_result = document.getElementById('search_result')
     user_list.innerHTML = ''
     search_result.textContent = ''

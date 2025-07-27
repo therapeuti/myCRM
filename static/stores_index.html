@@ -54,7 +54,7 @@
                 <th>Address</th>
             </tr>
         </thead>
-        <tbody id="tbody">
+        <tbody id="stores_tbody">
             <!-- 스토어 목록 뜨는 곳 -->
         </tbody>
     </table>
@@ -78,7 +78,7 @@
     <div id="modal_stores" class="modal">
         <div id="insert_stores">
             <button id="close">X</button>
-            <form action="/stores/add_store" method="post" id="modal_form">
+            <form action="/api/add_store" method="post" id="modal_form">
                 <h3>스토어 추가</h3><br>
                 <select id="modal_store_type" name="type">
                     <!-- 매장 종류 뜨는 곳 -->

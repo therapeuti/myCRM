@@ -1,16 +1,15 @@
 from flask import Blueprint
-from flask import request,jsonify, abort
+from flask import request,jsonify, abort, redirect, url_for
 from database.database import *
 from database.stores_db import *
-import uuid
 import math
+import uuid
 
 logging.basicConfig(level=logging.DEBUG,
                        format='%(asctime)s [%(levelname)s] %(message)s',
                        datefmt='%Y-%m-%d %H-%M-%S')
 
 stores_bp = Blueprint('stores', __name__)
-
 
 number_per_page = 10
 @stores_bp.route('/stores/')
@@ -79,3 +78,17 @@ def delete_store_info(id):
     deleted_store = get_store_by_id(id)
     logging.debug(f'삭제된 스토어 : {deleted_store}')
     return jsonify({'message': f'스토어ID {id}의 정보가 삭제되었습니다.'})
+
+@stores_bp.route('/add_store', methods=['POST'])
+def add_store():
+    s_id = str(uuid.uuid4())
+    s_type = request.form.get('type')
+    s_name = request.form.get('name')
+    address = request.form.get('address')
+    logging.debug(f'스토어 정보 : {s_id}, {s_name}, {s_type}, {address}')
+    store = {'id': s_id, 'name': s_name, 'type': s_type, 'address': address}
+    insert_result = insert_store(store)
+    new_store = get_store_by_id(s_id)
+    logging.debug(insert_result)
+    logging.debug(new_store)
+    return redirect(url_for('store_info', id=s_id))

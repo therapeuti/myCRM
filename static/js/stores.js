@@ -159,7 +159,7 @@ function render_store(store) {
 function render_stores(stores) {
     console.log('-----render_stores 함수 실행')
     console.log('스토어 데이터 수: ', stores.length)
-    const store_list = document.getElementById('tbody')
+    const store_list = document.getElementById('stores_tbody')
     const search_result = document.getElementById('search_result')
     store_list.innerHTML = ''
     search_result.textContent = ''

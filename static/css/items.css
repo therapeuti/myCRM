@@ -87,7 +87,7 @@ nav {
 }
 h1 {
     margin-bottom: 20px;
- }
+}
 #items_title,
 form {
     display: flex;
@@ -221,10 +221,16 @@ ol {
     width: 90px;
     text-align: center;
 }
+#i_id {
+    width: 40%;
+}
+#tbody td:first-child {
+    text-align: left;
+}
 #item_sales td,
-#tbody:nth-child(2),
-#tbody:nth-child(3),
-#tbody:nth-child(4) {
+#tbody td:nth-child(2),
+#tbody td:nth-child(3),
+#tbody td:nth-child(4) {
     text-align: center;
 }
 .modal {

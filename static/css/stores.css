@@ -219,9 +219,7 @@ ol {
 #tbody #address {
     width: 250px;
 }
-#tbody:nth-child(2),
-#tbody:nth-child(3),
-#tbody:nth-child(4) {
+#tbody:nth-child(2) {
     text-align: center;
 }
 #most_visited td,

@@ -48,7 +48,7 @@
         <table id="item_table">
             <thead>
             <tr>
-                <th>ID</th>
+                <th id="i_id">ID</th>
                 <th>Type</th>
                 <th>Name</th>
                 <th>Price</th>
@@ -78,7 +78,7 @@
     <div id="modal_items" class="modal">
         <div id="insert_items">
             <button id="close">X</button>
-            <form action="/items/add_item" method="post" id="modal_form">
+            <form action="/api/add_item" method="post" id="modal_form">
                 <h3>아이템 추가</h3><br>
                 <select id="modal_item_type" name="type">
                     <!-- 아이템 종류 뜨는 곳 -->

@@ -1,8 +1,9 @@
 from flask import Blueprint
-from flask import request,jsonify, abort
+from flask import request,jsonify, abort, redirect, url_for
 from database.database import *
 from database.items_db import *
 import math
+import uuid
 
 logging.basicConfig(level=logging.DEBUG,
                        format='%(asctime)s [%(levelname)s] %(message)s',
@@ -64,3 +65,14 @@ def delete_item(id):
     deleted_item = get_item_by_id(id)
     logging.debug(f'삭제된 아이템 : {deleted_item}')
     return jsonify({'message': f'아이템ID {id}의 정보가 삭제되었습니다.'})
+
+@items_bp.route('/add_item', methods=['POST'])
+def add_item():
+    i_id = str(uuid.uuid4())
+    i_type = request.form.get('type', type=str)
+    name = request.form.get('name', type=str)
+    price = request.form.get('price', type=int)
+    item = {'id': i_id, 'type': i_type, 'name': name, 'price': price}
+    new_item = insert_item(item)
+    logging.debug(f'추가된 아이템: {new_item}')
+    return redirect(url_for('item_info', id=i_id))

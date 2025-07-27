@@ -79,8 +79,12 @@ def get_order_by_id(id):
     order = cur.fetchone()
     cur.close()
     conn.close()
-    order = dict(order)
-    logging.debug(order)
+    if order:
+        order = dict(order)
+        logging.debug(order)
+    else:
+        logging.debug(f'조회된 결과가 없음 : {order}')
+        order = []
     return order
 
 def get_items_in_order(id):
