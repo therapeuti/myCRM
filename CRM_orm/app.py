@@ -3,7 +3,6 @@ from flask import render_template, redirect, url_for, request, jsonify, send_fro
 from flask import flash
 from routes.api import api_bp
 from database.models import *
-
 from database.database import *
 from database.users_db import *
 from database.stores_db import *
@@ -16,8 +15,7 @@ app = Flask(__name__, static_folder='static')
 app.secret_key = 'my_secret'
 app.register_blueprint(api_bp, url_prefix='/api')
 
-app.config['DATABASE'] = 'database/mycrm.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mycrm.db'
 db.init_app(app)
 
 

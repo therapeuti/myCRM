@@ -4,6 +4,7 @@ from database.database import *
 from database.users_db import *
 from database.stores_db import *
 from database.items_db import *
+from database.models import *
 import math
 import uuid
 from datetime import datetime
@@ -23,23 +24,24 @@ def get_users():
         page = 1
     orderby = request.args.get('orderby', default='name', type=str)
     u_id = request.args.get('id', type=str)
-    name = request.args.get('name', type=str)
-    address = request.args.get('address', type=str)
-    gender = request.args.get('gender', type=str)
-    logging.debug(f'GET 파라미터 : 페이지 {page}, 아이디 {u_id}, 이름 {name}, 주소 {address}, 성별 {gender}, 정렬기준 {orderby}')
+    u_name = request.args.get('name', type=str)
+    u_address = request.args.get('address', type=str)
+    u_gender = request.args.get('gender', type=str)
+    logging.debug(f'GET 파라미터 : 페이지 {page}, 아이디 {u_id}, 이름 {u_name}, 주소 {u_address}, 성별 {u_gender}, 정렬기준 {orderby}')
     
     filtering = {'page': page, 'orderby': orderby}
+    where = []
     if u_id:
-        filtering['id'] = u_id
-    if name:
-        filtering['name'] = name
-    if address:
-        filtering['address'] = address
-    if gender:
-        filtering['gender'] = gender
-    logging.debug(f'검색조건: {filtering}')
+        where.append(User.id.like(f'%{u_id}%'))
+    if u_name:
+        where.append(User.name.like(f'%{u_name}%'))
+    if u_address:
+        where.append(User.address.like(f'%{u_address}'))
+    if u_gender:
+        where.append(User.gender == u_gender)
+    logging.debug(f'검색조건: {where}')
 
-    users, count_users = get_users_list(number_per_page, filtering)
+    users, count_users = get_users_list(number_per_page, filtering, where)
     end_page = math.ceil(count_users / number_per_page)
     if (end_page != 0) and (page > end_page):
         abort(404)

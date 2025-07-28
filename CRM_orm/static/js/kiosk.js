@@ -10,6 +10,7 @@ const user_id = last[last.length - 1]
 console.log(user_id)
 
 store_type.addEventListener('change', (e) => {
+    store_name.style.display = "inline-block";
     console.log(e.target.value)
     fetch(`/api/store_name/${e.target.value}`)
         .then(response => response.json())

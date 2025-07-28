@@ -17,6 +17,8 @@ app.register_blueprint(api_bp, url_prefix='/api')
 
 app.config['DATABASE'] = 'database/mycrm.db'
 
+
+
 @app.route('/', methods=['GET','POST'])
 def index():
     return send_from_directory(app.static_folder, 'index.html')

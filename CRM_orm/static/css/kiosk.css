@@ -25,7 +25,9 @@ form {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     margin-bottom: 30px;
 }
-
+#store_name {
+    display: none;
+}
 select {
     padding: 10px;
     font-size: 1rem;
