@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이템 상세정보</title>
+    <link rel="stylesheet" href="/static/css/items.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="item_container">
+        <a href="javascript:history.back()" class="back_link">뒤로가기</a>
+        <div id="item_head">
+            <h3>아이템 상세 정보</h3>    
+            <div id="edit_btn">
+                <button id="update">수정</button>
+                <button id="delete">삭제</button>
+            </div>
+        </div>
+        <table id="item">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Item TYPE</th>
+                <th>Item Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr>
+                <!-- 아이템 정보 뜨는 곳 -->
+                <td id="item_id"></td>
+                <td><select id="item_type"></select></td>
+                <td><input type="text" id="item_name"></td>
+                <td><input type="text" id="price">원</td>
+            </tr>
+        </tbody>
+        </table>
+        <h3>최근 1년간 월간 매출액</h3>
+        <table id="item_sales">
+            <tr>
+                <th>년-월</th>
+                <th>판매 수익</th>
+                <th>판매 수량</th>
+            </tr>
+            <!-- 최근 1년간 월간 매출액 뜨는 곳 -->
+            </table>
+            <p class="comment" id="search_monthly_sales"></p>
+        
+        <h3>월별 매출액 그래프</h3>
+        <div>
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+    <script src="/static/js/item_info.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>

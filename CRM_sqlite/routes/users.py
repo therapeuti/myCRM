@@ -1,0 +1,106 @@
+from flask import Blueprint, abort
+from flask import request, jsonify, redirect, url_for
+from database.database import *
+from database.users_db import *
+from database.stores_db import *
+from database.items_db import *
+import math
+import uuid
+from datetime import datetime
+
+logging.basicConfig(level=logging.INFO,
+                   format='%(asctime)s [%(levelname)s] %(messages)s',
+                   datefmt='%Y-%m-%d %H-%M-%S')
+
+users_bp = Blueprint('users', __name__)
+
+number_per_page = 10
+@users_bp.route('/users/')
+def get_users():
+    logging.debug('---------------사용자 목록 조회------------------------')
+    page = request.args.get('page', default=1, type=int)
+    if (page < 1) or type(page) is not int:
+        page = 1
+    orderby = request.args.get('orderby', default='name', type=str)
+    u_id = request.args.get('id', type=str)
+    name = request.args.get('name', type=str)
+    address = request.args.get('address', type=str)
+    gender = request.args.get('gender', type=str)
+    logging.debug(f'GET 파라미터 : 페이지 {page}, 아이디 {u_id}, 이름 {name}, 주소 {address}, 성별 {gender}, 정렬기준 {orderby}')
+    
+    filtering = {'page': page, 'orderby': orderby}
+    if u_id:
+        filtering['id'] = u_id
+    if name:
+        filtering['name'] = name
+    if address:
+        filtering['address'] = address
+    if gender:
+        filtering['gender'] = gender
+    logging.debug(f'검색조건: {filtering}')
+
+    users, count_users = get_users_list(number_per_page, filtering)
+    end_page = math.ceil(count_users / number_per_page)
+    if (end_page != 0) and (page > end_page):
+        abort(404)
+    logging.debug(f'send_user() : {users}')
+    logging.debug(f'전체 사용자 데이터 개수: {count_users}, 전체 페이지 수: {end_page}')
+    return jsonify({'users':users, 'end_page':end_page})
+
+@users_bp.route('/user_info/<id>')
+def get_user_info(id):
+    user = get_user_by_id(id)
+    logging.debug(f'ID로 조회한 사용자: {user}')
+    return jsonify(user)
+
+@users_bp.route('/update_user/<id>', methods=['PUT'])
+def update_user_info(id):
+    user = request.get_json()
+    logging.debug(user)
+    update_user(user)
+    user_info = get_user_by_id(id)
+    logging.debug(user_info)
+    return jsonify(user_info)
+
+@users_bp.route('/delete_user/<id>', methods=['DELETE'])
+def delete_user_info(id):
+    delete_user_by_id(id)
+    user = get_user_by_id(id)
+    logging.debug(user)
+    return jsonify({'message': f'사용자ID {id}의 정보가 삭제되었습니다.'})
+
+@users_bp.route('/order_history/<id>')
+def get_users_order_history(id):
+    order_history = get_users_order(id)
+    return jsonify(order_history)
+
+@users_bp.route('/store_top5/<id>')
+def get_users_store_top5(id):
+    store_top5 = get_store_top5(id)
+    return jsonify(store_top5)
+
+@users_bp.route('/item_top5/<id>')
+def get_users_item_top5(id):
+    item_top5 = get_item_top5(id)
+    return jsonify(item_top5)
+
+
+@users_bp.route('/add_user', methods=['POST'])
+def add_user():
+    u_id = str(uuid.uuid4())
+    u_name =  request.form.get('name')
+    birthdate =  request.form.get('birthdate')
+    birthdate =  datetime.strptime(birthdate, '%Y-%m-%d')
+    age = datetime.today().year - birthdate.year
+    birthdate = birthdate.strftime('%Y-%m-%d')
+    gender =  request.form.get('gender')
+    address =  request.form.get('address')
+    logging.debug(f'사용자 정보 : {u_id}, {u_name}, {birthdate}, {gender}, {age}, {address}')
+    users = {'id':u_id, 'name':u_name, 'birthdate':birthdate, 'age':age, 'gender':gender, 'address':address}
+    insert_result = insert_user(users)
+    logging.debug(insert_result)
+    new_user = get_user_by_id(u_id)
+    logging.debug(new_user)
+    return redirect(url_for('user_info', id=u_id))
+
+
