@@ -152,6 +152,7 @@ form {
     background-color: #f1f3f5;
     font-weight: 600;
 }
+#most_visited td a,
 #store_table td a {
     color: #1c7ed6;
     text-decoration: none;

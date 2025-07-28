@@ -1,4 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
+import logging
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    datefmt='%Y-%m-%d %H-%M-%S')
+
 
 db = SQLAlchemy()
 
@@ -50,8 +56,8 @@ class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.String, primary_key=True)
     ordertime = db.Column(db.String)
-    store_id = db.Column(db.String, db.ForeignKey('store.id'))
-    user_id = db.Column(db.String, db.ForeignKey('user.id'))
+    store_id = db.Column(db.String, db.ForeignKey('stores.id'))
+    user_id = db.Column(db.String, db.ForeignKey('users.id'))
 
     def to_dict(self):
         return {'id': self.id,
@@ -89,8 +95,8 @@ class Orderitem(db.Model):
     __tablename__ = 'orderitems'
     
     id = db.Column(db.String, primary_key=True)
-    order_id = db.Column(db.String, db.ForeignKey('order.id'))
-    item_id = db.Column(db.String, db.ForeignKey('item.id'))
+    order_id = db.Column(db.String, db.ForeignKey('orders.id'))
+    item_id = db.Column(db.String, db.ForeignKey('items.id'))
 
     def to_dict(self):
         return {'id': self.id,

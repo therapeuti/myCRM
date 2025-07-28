@@ -6,7 +6,7 @@ from routes.orders import orders_bp
 from routes.items import items_bp
 from routes.kiosk import kiosk_bp
 from routes.orderitems import orderitems_bp
-from database.database import *
+from database.kiosk_db import *
 from database.users_db import *
 from database.stores_db import *
 from database.items_db import *

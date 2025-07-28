@@ -27,8 +27,8 @@ if (parameters.get('name')) {
 if (parameters.get('address')) {
     search_field.value = 'address'
     input_query.value = parameters.get('address')}
-if (parameters.get('type')) {
-    type.value = parameters.get('type')}
+// if (parameters.get('type')) {
+//     store_type.value = parameters.get('type')}
 if (parameters.get('orderby')) {
     orderby.value = parameters.get('orderby')}
 
@@ -206,6 +206,7 @@ function render_page_btns(end) {
     const btns_per_page = 10 // 한 페이지에 보여줄 페이지 버튼 수
     const first_page = Math.floor((current_page - 1) / btns_per_page )*btns_per_page + 1
     const tenth_page = Math.floor((current_page - 1) / btns_per_page)*btns_per_page + btns_per_page
+    if (end == 0) {end = 1}
     const end_page_first = Math.floor((end - 1) / btns_per_page)*btns_per_page + 1
     pages.innerHTML = '' // 페이지 번호 초기화
     if (first_page === end_page_first) {
@@ -289,6 +290,8 @@ function load_store_type(store_types) {
         store_type.appendChild(opt1);
         type_in_modal.appendChild(opt2);
     }
+    if (parameters.get('type')) {
+    store_type.value = parameters.get('type')} 
 }
 
 function render_page(data) {   

@@ -1,4 +1,3 @@
-from database.database import *
 from database.models import *
 from sqlalchemy import and_
 

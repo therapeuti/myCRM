@@ -1,13 +1,13 @@
 from flask import Blueprint
 from flask import request,jsonify, abort, redirect, url_for
-from database.database import *
+from database.kiosk_db import *
 from database.stores_db import *
 import math
 import uuid
 
 logging.basicConfig(level=logging.DEBUG,
-                       format='%(asctime)s [%(levelname)s] %(message)s',
-                       datefmt='%Y-%m-%d %H-%M-%S')
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    datefmt='%Y-%m-%d %H-%M-%S')
 
 stores_bp = Blueprint('stores', __name__)
 
@@ -41,8 +41,7 @@ def get_stores():
     end_page = math.ceil(count_stores / number_per_page)
     if (end_page != 0) and (page > end_page):
         abort(404)
-    # store_types = get_store_type()
-    store_types = []
+    store_types = get_store_type()
     return jsonify({'stores': stores, 'end_page': end_page, 'store_types': store_types})
 
 @stores_bp.route('/store_info/<id>')

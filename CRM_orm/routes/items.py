@@ -1,6 +1,5 @@
 from flask import Blueprint
 from flask import request,jsonify, abort, redirect, url_for
-from database.database import *
 from database.items_db import *
 import math
 import uuid
@@ -36,8 +35,7 @@ def get_items():
     items, count_items = get_items_list(number_per_page, filtering, where)
     logging.debug(items)
     end_page = math.ceil(count_items / number_per_page)
-    # item_type = get_item_type()
-    item_type = []
+    item_type = get_item_type()
     return jsonify({'items': items, 'end_page': end_page, 'item_types': item_type})
 
 @items_bp.route('/item_info/<id>')
@@ -77,5 +75,5 @@ def add_item():
     price = request.form.get('price', type=int)
     item = {'id': i_id, 'type': i_type, 'name': name, 'price': price}
     new_item = insert_item(item)
-    logging.debug(f'추가된 아이템: {new_item}')
+    logging.debug(f'아이템 추가 결과 : {new_item}')
     return redirect(url_for('item_info', id=i_id))

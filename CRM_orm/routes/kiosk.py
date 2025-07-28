@@ -1,6 +1,6 @@
 from flask import Blueprint
-from flask import request,jsonify, abort, redirect, url_for
-from database.database import *
+from flask import request,jsonify
+from database.kiosk_db import *
 from database.stores_db import *
 from database.items_db import *
 import uuid
@@ -46,5 +46,5 @@ def add_order():
         orderitem = {'id': orderitem_id, 'order_id': order_id, 'item_id': i}
         orderitems.append(orderitem)
     new_orderitems = insert_orderitem(orderitems)
-    logging.debug(f'삽입된 주문아이템 데이터: {orderitems}')
-    return jsonify({'order':new_order, 'orderitems':new_orderitems})
+    logging.debug(f'주문된 아이템 : {orderitems}')
+    return jsonify({'message': '상품이 주문되었습니다.'})

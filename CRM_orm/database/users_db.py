@@ -1,6 +1,5 @@
 from database.models import *
-from database.database import *
-import logging
+from database.kiosk_db import *
 from sqlalchemy import and_, func
 from datetime import datetime
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, abort
 from flask import request, jsonify, redirect, url_for
-from database.database import *
+from database.kiosk_db import *
 from database.users_db import *
 from database.stores_db import *
 from database.items_db import *
@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 
 logging.basicConfig(level=logging.INFO,
-                   format='%(asctime)s [%(levelname)s] %(messages)s',
+                   format='%(asctime)s [%(levelname)s] %(message)s',
                    datefmt='%Y-%m-%d %H-%M-%S')
 
 users_bp = Blueprint('users', __name__)

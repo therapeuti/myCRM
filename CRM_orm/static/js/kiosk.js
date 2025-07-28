@@ -37,7 +37,6 @@ store_name.addEventListener('change', (e) => {
     fetch('/api/items')
         .then(response => response.json())
         .then(data => {
-            items
             for (i of data) {
                 console.log(i)
                 const new_tr = document.createElement('tr')
@@ -127,8 +126,8 @@ add_order.addEventListener('click', (e) => {
         .then(response => response.json()) 
         .then(data => {
             console.log(data)
+            alert(`${data.message}`)
         })
-        alert('상품이 주문되었습니다!')
     } else {
         console.log('주문할 상품이 없음.')
         alert('주문할 상품이 없습니다. 상품을 선택해주세요!')

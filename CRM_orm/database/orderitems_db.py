@@ -1,4 +1,4 @@
-from database.database import *
+from database.kiosk_db import *
 from database.models import *
 from sqlalchemy import and_
 
@@ -30,20 +30,11 @@ def get_orderitems_list(count: int, filtering: dict, where: list):
 
     return orderitems_dict, count_orderitems
 
-
-
-# def get_orderitem_by_id(id):
-#     conn = get_connect()
-#     cur = conn.cursor()
-
-#     cur.execute('SELECT * FROM orderitems WHERE id=?', (id ,))
-#     orderitem = cur.fetchone()
-#     cur.close()
-#     conn.close()
-#     if not orderitem:
-#         orderitem = '아이템 정보가 없음'
-#         return orderitem
-#     else:
-#         logging.debug(dict(orderitem))
-#         orderitem_dict = dict(orderitem)
-#         return orderitem_dict
+def get_orderitem_by_id(id):
+    orderitem = Orderitem.query.get(id)
+    if not orderitem:
+        orderitem_dict = {}
+        return orderitem
+    else:
+        orderitem_dict = orderitem.to_dict()
+        return orderitem_dict

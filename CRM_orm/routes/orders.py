@@ -1,6 +1,5 @@
 from flask import Blueprint
 from flask import abort, request, jsonify
-from database.database import *
 from database.orders_db import *
 import math
 

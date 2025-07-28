@@ -1,14 +1,23 @@
+const current_path = window.location.pathname;
 const order_id = document.getElementById('order_id')
 const ordertime = document.getElementById('ordertime')
 const order = document.getElementById('order')
 const tbody = document.getElementById('tbody')
 const orderitems = document.getElementById('orderitems')
 
-const url2 = window.location.href
+// nav바에서 페이지 버튼 활성화 -> 페이지 로드할 때마다 확인하여 적용
+let section = current_path.split('/')[1];
+const links = document.querySelectorAll('.nav_link');
+links.forEach(link => {
+    const link_section = link.getAttribute('data-section')
+    if (link_section === section){
+        link.classList.add('active')
+    }
+})
+
 const url = window.location.pathname
 const last = url.split('/')
-const orderid = last[last.length - 1] 
-
+const storeid = last[last.length - 1] 
 
 
 function render_table_with_link(ths, data) {

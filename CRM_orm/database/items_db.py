@@ -1,8 +1,6 @@
-from database.database import *
+from database.kiosk_db import *
 from database.models import *
-from sqlalchemy import and_
-
-
+from sqlalchemy import and_, func
 
 def get_items_list(count: int, filtering: dict, where: list):
     offset_num = int((filtering['page'] - 1 ) * count)
@@ -30,96 +28,62 @@ def get_items_list(count: int, filtering: dict, where: list):
     logging.debug(f'전체 사용자 수: {count_items}')
     return items_dict, count_items
 
-# def get_items():
-#     conn = get_connect()
-#     cur = conn.cursor()
-#     cur.execute('SELECT * from items')
-#     items = cur.fetchall()
-#     items = [dict(i) for i in items]
-#     cur.close()
-#     conn.close()
-#     return items
+def get_items():
+    items = Item.query.all()
+    items = [{'id': i.id, 'type': i.type, 'name': i.name, 'price': i.price} for i in items]
+    return items
 
-# def get_item_type():
-#     conn = get_connect()
-#     cur = conn.cursor()
-#     cur.execute('SELECT distinct type from items')
-#     item_type = cur.fetchall()
-#     item_type = [dict(i)['type'] for i in item_type]
-#     logging.debug(item_type)
-#     cur.close()
-#     conn.close()
-#     return item_type
+def get_item_type():
+    types = db.session.query(Item.type).distinct().all()
+    logging.debug(types)
+    item_types = [i[0] for i in types]
+    return item_types
 
 
-# def get_item_by_id(id):
-#     conn = get_connect()
-#     cur = conn.cursor()
+def get_item_by_id(id):
+    item = Item.query.get(id)
+    if not item:
+        item = {}
+        return item
+    else:
+        item_dict = item.to_dict()
+        return item_dict
 
-#     cur.execute('SELECT * FROM items WHERE id=?', (id ,))
-#     item = cur.fetchone()
-#     cur.close()
-#     conn.close()
-#     if not item:
-#         item = '아이템 정보가 없음'
-#         return item
-#     else:
-#         logging.debug(dict(item))
-#         item_dict = dict(item)
-#         return item_dict
+def get_item_sales(id):
+    sales = db.session.query(func.strftime('%Y-%m', Order.ordertime).label('month'),
+                             func.sum(Item.price).label('revenue'),
+                             func.count().label('cnt'))\
+                             .join(Orderitem, Orderitem.order_id == Order.id)\
+                             .join(Item, Item.id == Orderitem.item_id)\
+                             .filter(Item.id == id)\
+                             .group_by(func.strftime('%Y-%m', Order.ordertime))\
+                             .order_by(func.strftime('%Y-%m', Order.ordertime).desc()).limit(12).all()
+    logging.debug(sales)
+    item_sales = [{'month': s.month, 'revenue': s.revenue, 'cnt': s.cnt} for s in sales]    
+    return item_sales
 
-# def get_item_sales(id):
-#     conn = get_connect()
-#     cur = conn.cursor()
-#     cur.execute('''
-#                 SELECT strftime('%Y-%m', o.ordertime) as month, sum(i.price) as revenue, count(*) as cnt
-#                 FROM items i
-#                 JOIN orderitems oi ON i.id=oi.item_id
-#                 JOIN orders o ON o.id=oi.order_id
-#                 WHERE i.id=?
-#                 GROUP BY month
-#                 ORDER BY month DESC
-#                 LIMIT 12
-#                 ''',(id,))
-#     item_sales = cur.fetchall()
-#     cur.close()
-#     conn.close()
-#     item_sales = [dict(i) for i in item_sales]
-#     item_sales.reverse()
-#     return item_sales
+def insert_item(item):
+    new_item = Item(id=item['id'],
+                    type=item['type'],
+                    name=item['name'],
+                    price=item['price'])
+    db.session.add(new_item)
+    db.session.commit()
+    return '아이템 등록 완료'
 
+def update_item(item):
+    new_item = db.session.get(Item, item['id'])
+    if new_item is None:
+        return print('아이템이 존재하지 않습니다')
+    new_item.type = item['type']
+    new_item.name = item['name']
+    new_item.price = item['price']
+    db.session.commit()
 
-# def insert_item(item):
-#     conn = get_connect()
-#     cur = conn.cursor()
-#     cur.execute('INSERT INTO items VALUES (?, ?, ?, ?)',
-#                 (item['id'], item['name'], item['type'], item['price']))
-#     conn.commit()
-#     cur.execute('SELECT * FROM items WHERE id=?', (item['id'],))
-#     new_item = cur.fetchone()
-#     new_item = dict(new_item)
-#     cur.close()
-#     conn.close()
-#     return new_item
-
-# def update_item(item):
-#     conn = get_connect()
-#     cur = conn.cursor()
-#     cur.execute('''
-#                 UPDATE items 
-#                 SET  type=?, name=?, price=? 
-#                 WHERE id=?
-#                 ''',
-#                 (item['type'], item['name'], item['price'], item['id']))
-#     conn.commit()
-#     cur.close()
-#     conn.close()
-
-# def delete_item_by_id(id):
-#     conn = get_connect()
-#     cur = conn.cursor()
-#     cur.execute('DELETE FROM items WHERE id=?', (id, ))
-#     conn.commit()
-#     cur.close()
-#     conn.close()
-    
+def delete_item_by_id(id):
+    item = db.session.get(Item, id)
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+    else:
+        print('아이템 없음 : ', id)

@@ -3,7 +3,7 @@ from flask import redirect, url_for, request, send_from_directory
 from flask import flash
 from routes.api import api_bp
 from database.models import *
-from database.database import *
+from database.kiosk_db import *
 from database.users_db import *
 from database.stores_db import *
 from database.items_db import *
@@ -14,7 +14,6 @@ from datetime import datetime
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'my_secret'
 app.register_blueprint(api_bp, url_prefix='/api')
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mycrm.db'
 db.init_app(app)
 
@@ -94,17 +93,16 @@ def user_login():
         logging.debug(store_type)
         return redirect(url_for('kiosk_page', id=u_id)) 
     
-
-
-
 @app.route('/signup', methods=['POST'])
 def user_signup():
     u_id = str(uuid.uuid4())
     u_name =  request.form.get('name')
     birthdate =  request.form.get('birthdate')
     birthdate =  datetime.strptime(birthdate, '%Y-%m-%d')
+    logging.debug(birthdate)
     age = datetime.today().year - birthdate.year
     birthdate = birthdate.strftime('%Y-%m-%d')
+    logging.debug(birthdate)
     gender =  request.form.get('gender')
     address =  request.form.get('address')
     logging.debug(f'사용자 정보 : {u_id}, {u_name}, {birthdate}, {gender}, {age}, {address}')

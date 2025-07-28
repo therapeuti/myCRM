@@ -76,8 +76,16 @@ function render_table_row(ths, data) {
     const new_tr = document.createElement('tr')
     for (let key of ths) {
         const new_td = document.createElement('td')
-        new_td.innerText = data[key]
-        new_tr.appendChild(new_td)
+        if (key == 'user_id'){
+            const new_a = document.createElement('a')
+            new_a.href = `/users/info/${data[key]}`
+            new_a.innerText = data[key]
+            new_td.appendChild(new_a)
+            new_tr.appendChild(new_td)
+        } else {
+            new_td.innerText = data[key]
+            new_tr.appendChild(new_td)
+        }
     }
     return new_tr
     }

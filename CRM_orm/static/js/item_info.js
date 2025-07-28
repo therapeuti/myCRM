@@ -118,6 +118,9 @@ fetch(`/api/items/monthly_sales/${itemid}`)
             revenue.push(i.revenue)
             count.push(i.cnt)
         }
+        month.reverse()
+        revenue.reverse()
+        count.reverse()
         // 차트그리기
         const ctx = document.getElementById('chart')
         const sales_data = {
