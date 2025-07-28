@@ -19,22 +19,25 @@ def get_items():
     if (page < 1) or type(page) is not int:
         page = 1
     i_id = request.args.get('id')
+    i_name = request.args.get('name')
     orderby = request.args.get('orderby', default='name', type=str)
     item_type = request.args.get('type')
-    name = request.args.get('name')
 
     filtering = {'page':page,'orderby':orderby}
+    where = []
     if i_id:
-        filtering['id'] = i_id
+        where.append(Item.id.like(f'%{i_id}%'))
+    if i_name:
+        where.append(Item.name.like(f'%{i_name}%'))
     if item_type:
-        filtering['type'] = item_type
-    if name:
-        filtering['name'] = name
+        where.append(Item.type == item_type)
+    logging.debug(f'검색조건: {where}')
 
-    items, count_items = get_items_list(number_per_page, filtering)
+    items, count_items = get_items_list(number_per_page, filtering, where)
     logging.debug(items)
     end_page = math.ceil(count_items / number_per_page)
-    item_type = get_item_type()
+    # item_type = get_item_type()
+    item_type = []
     return jsonify({'items': items, 'end_page': end_page, 'item_types': item_type})
 
 @items_bp.route('/item_info/<id>')

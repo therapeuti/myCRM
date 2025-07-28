@@ -36,7 +36,7 @@ def get_users():
     if u_name:
         where.append(User.name.like(f'%{u_name}%'))
     if u_address:
-        where.append(User.address.like(f'%{u_address}'))
+        where.append(User.address.like(f'%{u_address}%'))
     if u_gender:
         where.append(User.gender == u_gender)
     logging.debug(f'검색조건: {where}')

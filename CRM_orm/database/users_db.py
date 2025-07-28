@@ -34,8 +34,8 @@ def get_users_list(count: int, filtering: dict, where: list):
 # def get_users_gender():
 #     return gender_value
 
-def get_user_by_id(id):
-    user = User.query.get(id)
+def get_user_by_id(id_):
+    user = User.query.get(id_)
     user_dict = user.to_dict()
     if user is None:
         user_dict = {}

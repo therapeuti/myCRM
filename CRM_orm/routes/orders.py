@@ -20,21 +20,23 @@ def get_orders():
     orderby = request.args.get('orderby', default='id', type=str)
     o_id = request.args.get('id')
     ordertime = request.args.get('ordertime')
+    logging.debug(ordertime)
     store_id = request.args.get('store_id')
     user_id = request.args.get('user_id')
 
     filtering = {'page':page, 'orderby':orderby}
+    where = []
     if o_id:
-        filtering['id'] = o_id
-    if ordertime:
-        filtering['ordertime'] = ordertime
+        where.append(Order.id.like(f'%{o_id}%'))
     if store_id:
-        filtering['store_id'] = store_id
+        where.append(Order.store_id.like(f'%{store_id}%'))
     if user_id:
-        filtering['user_id'] = user_id
-    logging.debug(f'검색조건: {filtering}')
+        where.append(Order.user_id.like(f'%{user_id}%'))
+    if ordertime:
+        where.append(Order.ordertime.like(f'%{ordertime}%'))
+    logging.debug(f'검색조건: {where}')
 
-    orders, count_orders = get_orders_list(number_per_page, filtering)
+    orders, count_orders = get_orders_list(number_per_page, filtering, where)
     end_page = math.ceil(count_orders / number_per_page)
     if (end_page != 0) and (page > end_page):
         abort(404)

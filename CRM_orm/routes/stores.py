@@ -20,27 +20,29 @@ def get_stores():
         page = 1
     orderby = request.args.get('orderby', default='name', type=str)
     s_id = request.args.get('id', type=str)
-    name = request.args.get('name', type=str)
-    address = request.args.get('address', type=str)
+    s_name = request.args.get('name', type=str)
+    s_address = request.args.get('address', type=str)
     store_type = request.args.get('type', type=str)
-    logging.debug(f'GET 파라미터 : 페이지 {page}, 아이디 {s_id}, 이름 {name}, 주소 {address}, 매장종류 {store_type}, 정렬기준 {orderby}')
+    logging.debug(f'GET 파라미터 : 페이지 {page}, 아이디 {s_id}, 이름 {s_name}, 주소 {s_address}, 매장종류 {store_type}, 정렬기준 {orderby}')
 
     filtering = {'page': page, 'orderby': orderby}
+    where = []
     if s_id:
-        filtering['id'] = s_id
-    if name:
-        filtering['name'] = name
-    if address:
-        filtering['address'] = address
+        where.append(Store.id.like(f'%{s_id}%'))
+    if s_name:
+        where.append(Store.name.like(f'%{s_name}%'))
+    if s_address:
+        where.append(Store.address.like(f'%{s_address}%'))
     if store_type:
-        filtering['type'] = store_type
-    logging.debug(f'검색조건: {filtering}')
+        where.append(Store.type == store_type)
+    logging.debug(f'검색조건: {where}')
 
-    stores, count_stores = get_stores_list(number_per_page, filtering)
+    stores, count_stores = get_stores_list(number_per_page, filtering, where)
     end_page = math.ceil(count_stores / number_per_page)
     if (end_page != 0) and (page > end_page):
         abort(404)
-    store_types = get_store_type()
+    # store_types = get_store_type()
+    store_types = []
     return jsonify({'stores': stores, 'end_page': end_page, 'store_types': store_types})
 
 @stores_bp.route('/store_info/<id>')

@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, redirect, url_for, request, jsonify, send_from_directory
+from flask import redirect, url_for, request, send_from_directory
 from flask import flash
 from routes.api import api_bp
 from database.models import *
@@ -52,7 +52,7 @@ def orderitems():
 
 @app.route('/users/info/<id>')
 def user_info(id):
-    return send_from_directory(current_app.static_folder, 'user_info.html')
+    return send_from_directory(app.static_folder, 'user_info.html')
 
 @app.route('/stores/info/<id>')
 def store_info(id):

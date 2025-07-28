@@ -31,21 +31,21 @@ def get_orderitem_by_id(id):
         return orderitem_dict
     
 
-def insert_user(users):
-    cur.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
-                (users['id'], users['name'], users['birthdate'], users['age'], users['gender'], users['address']))
-    return '회원가입 완료'
+# def insert_user(users):
+#     cur.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
+#                 (users['id'], users['name'], users['birthdate'], users['age'], users['gender'], users['address']))
+#     return '회원가입 완료'
 
-def insert_order(order):
-    cur.execute('INSERT INTO orders VALUES (?, ?, ?, ?)',
-                (order['id'], order['ordertime'], order['store_id'], order['user_id']))
-    cur.execute('SELECT * FROM orders WHERE id=?', (order['id'],))
-    new_order = dict(new_order)
-    return new_order
+# def insert_order(order):
+#     cur.execute('INSERT INTO orders VALUES (?, ?, ?, ?)',
+#                 (order['id'], order['ordertime'], order['store_id'], order['user_id']))
+#     cur.execute('SELECT * FROM orders WHERE id=?', (order['id'],))
+#     new_order = dict(new_order)
+#     return new_order
 
-def insert_orderitem(orderitem):
-    new_orderitems = []
-    for i in orderitem:
-        new_orderitems.append(new)
-    new_orderitems = [dict(new) for new in new_orderitems]
-    return new_orderitems
+# def insert_orderitem(orderitem):
+#     new_orderitems = []
+#     for i in orderitem:
+#         new_orderitems.append(new)
+#     new_orderitems = [dict(new) for new in new_orderitems]
+#     return new_orderitems

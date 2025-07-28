@@ -17,21 +17,22 @@ def get_orderitems():
     page = request.args.get('page', default=1, type=int)
     if (page < 1) or type(page) is not int:
         page = 1
-    orderitem_id = request.args.get('id')
+    _id = request.args.get('id')
     order_id = request.args.get('order_id')
     item_id = request.args.get('item_id')
     orderby = request.args.get('orderby', default='id', type=str)
 
     filtering = {'page':page, 'orderby':orderby}
-    if orderitem_id:
-        filtering['id'] = orderitem_id
+    where = []
+    if _id:
+        where.append(Order.id.like(f'%{_id}%'))
     if order_id:
-        filtering['order_id'] = order_id
+        where.append(Order.order_id.like(f'%{order_id}%'))
     if item_id:
-        filtering['item_id'] = item_id
-    logging.debug(filtering)
+        where.append(Order.item_id.like(f'%{item_id}%'))
+    logging.debug(f'검색조건: {where}')
     
-    orderitems, count_orderitems = get_orderitems_list(number_per_page, filtering)
+    orderitems, count_orderitems = get_orderitems_list(number_per_page, filtering, where)
     end_page = math.ceil(count_orderitems / number_per_page)
     return jsonify({'orderitems': orderitems, 'end_page': end_page})
 
