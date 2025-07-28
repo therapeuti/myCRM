@@ -49,41 +49,41 @@ def get_users():
     logging.debug(f'전체 사용자 데이터 개수: {count_users}, 전체 페이지 수: {end_page}')
     return jsonify({'users':users, 'end_page':end_page})
 
-@users_bp.route('/user_info/<id>')
-def get_user_info(id):
-    user = get_user_by_id(id)
+@users_bp.route('/user_info/<id_>')
+def get_user_info(id_):
+    user = get_user_by_id(id_)
     logging.debug(f'ID로 조회한 사용자: {user}')
     return jsonify(user)
 
-@users_bp.route('/update_user/<id>', methods=['PUT'])
-def update_user_info(id):
+@users_bp.route('/update_user/<id_>', methods=['PUT'])
+def update_user_info(id_):
     user = request.get_json()
     logging.debug(user)
     update_user(user)
-    user_info = get_user_by_id(id)
+    user_info = get_user_by_id(id_)
     logging.debug(user_info)
     return jsonify(user_info)
 
-@users_bp.route('/delete_user/<id>', methods=['DELETE'])
-def delete_user_info(id):
-    delete_user_by_id(id)
-    user = get_user_by_id(id)
+@users_bp.route('/delete_user/<id_>', methods=['DELETE'])
+def delete_user_info(id_):
+    delete_user_by_id(id_)
+    user = get_user_by_id(id_)
     logging.debug(user)
-    return jsonify({'message': f'사용자ID {id}의 정보가 삭제되었습니다.'})
+    return jsonify({'message': f'사용자ID {id_}의 정보가 삭제되었습니다.'})
 
-@users_bp.route('/order_history/<id>')
-def get_users_order_history(id):
-    order_history = get_users_order(id)
+@users_bp.route('/order_history/<id_>')
+def get_users_order_history(id_):
+    order_history = get_users_order(id_)
     return jsonify(order_history)
 
-@users_bp.route('/store_top5/<id>')
-def get_users_store_top5(id):
-    store_top5 = get_store_top5(id)
+@users_bp.route('/store_top5/<id_>')
+def get_users_store_top5(id_):
+    store_top5 = get_store_top5(id_)
     return jsonify(store_top5)
 
-@users_bp.route('/item_top5/<id>')
-def get_users_item_top5(id):
-    item_top5 = get_item_top5(id)
+@users_bp.route('/item_top5/<id_>')
+def get_users_item_top5(id_):
+    item_top5 = get_item_top5(id_)
     return jsonify(item_top5)
 
 
@@ -93,13 +93,15 @@ def add_user():
     u_name =  request.form.get('name')
     birthdate =  request.form.get('birthdate')
     birthdate =  datetime.strptime(birthdate, '%Y-%m-%d')
+    logging.debug(birthdate)
     age = datetime.today().year - birthdate.year
     birthdate = birthdate.strftime('%Y-%m-%d')
+    logging.debug(birthdate)
     gender =  request.form.get('gender')
     address =  request.form.get('address')
     logging.debug(f'사용자 정보 : {u_id}, {u_name}, {birthdate}, {gender}, {age}, {address}')
-    users = {'id':u_id, 'name':u_name, 'birthdate':birthdate, 'age':age, 'gender':gender, 'address':address}
-    insert_result = insert_user(users)
+    user = {'id':u_id, 'name':u_name, 'birthdate':birthdate, 'age':age, 'gender':gender, 'address':address}
+    insert_result = insert_user(user)
     logging.debug(insert_result)
     new_user = get_user_by_id(u_id)
     logging.debug(new_user)

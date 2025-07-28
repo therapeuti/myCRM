@@ -31,10 +31,7 @@ def get_orderitem_by_id(id):
         return orderitem_dict
     
 
-# def insert_user(users):
-#     cur.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
-#                 (users['id'], users['name'], users['birthdate'], users['age'], users['gender'], users['address']))
-#     return '회원가입 완료'
+
 
 # def insert_order(order):
 #     cur.execute('INSERT INTO orders VALUES (?, ?, ?, ?)',
