@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import redirect, url_for, request, send_from_directory
+from flask import redirect, url_for, request, send_from_directory, jsonify
 from flask import flash
 from routes.api import api_bp
 from database.models import *
@@ -75,23 +75,21 @@ def customer_page():
 def kiosk_page(id):
     return send_from_directory(app.static_folder, 'kiosk.html')
 
-@app.route('/user_login', methods=['GET','POST'])
+@app.route('/user_login', methods=['POST'])
 def user_login():
-    if request.method == 'GET':
-        u_id = request.args.get('id')
-    if request.method == 'POST':
-        u_id = request.form.get('id')
+    u_id = request.form.get('id')
     logging.debug(u_id)
     login_user = get_user_by_id(u_id)
     logging.debug(login_user)
     if not login_user:
-        flash('로그인 실패 : 사용자 정보 없음')
-        return redirect(url_for('customer_page'))
+        return redirect(url_for('customer_page', message='로그인 실패'))
+        # return jsonify({'success': False, 'message': '로그인 실패 : 사용자 정보 없음'})
     else:
         login_user = get_user_by_id(u_id)
         store_type = get_store_type()
         logging.debug(store_type)
-        return redirect(url_for('kiosk_page', id=u_id)) 
+        return redirect(url_for('kiosk_page', id=u_id))
+        # return jsonify({'success': True, 'redirect_url': url_for('kiosk_page', id=u_id)}) 
     
 @app.route('/signup', methods=['POST'])
 def user_signup():
