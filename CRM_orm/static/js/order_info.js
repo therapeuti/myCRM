@@ -17,7 +17,7 @@ links.forEach(link => {
 
 const url = window.location.pathname
 const last = url.split('/')
-const storeid = last[last.length - 1] 
+const orderid = last[last.length - 1] 
 
 
 function render_table_with_link(ths, data) {
