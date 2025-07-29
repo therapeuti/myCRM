@@ -85,7 +85,7 @@ def update_store(store):
     new_store = db.session.get(Store, store['id'])
     if new_store is None:
         return print('스토어가 존재하지 않습니다.')
-    new_store.id = store[id]
+    new_store.id = store['id']
     new_store.type = store['type']
     new_store.name = store['name']
     new_store.address = store['address']

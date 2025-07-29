@@ -19,7 +19,7 @@ number_per_page = 10
 @users_bp.route('/users/')
 def get_users():
     logging.debug('---------------사용자 목록 조회------------------------')
-    page = request.args.get('page', default=1, type=int)
+    page = request.args.get('page', default=1, type=int) #최소값
     if (page < 1) or type(page) is not int:
         page = 1
     orderby = request.args.get('orderby', default='name', type=str)

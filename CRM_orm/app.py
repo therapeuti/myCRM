@@ -1,6 +1,5 @@
 from flask import Flask
-from flask import redirect, url_for, request, send_from_directory, jsonify
-from flask import flash
+from flask import redirect, url_for, request, send_from_directory
 from routes.api import api_bp
 from database.models import *
 from database.kiosk_db import *
@@ -102,6 +101,7 @@ def user_signup():
     gender =  request.form.get('gender')
     address =  request.form.get('address')
     logging.debug(f'사용자 정보 : {u_id}, {u_name}, {birthdate}, {gender}, {age}, {address}')
+    
     users = {'id':u_id, 'name':u_name, 'birthdate':birthdate, 'age':age, 'gender':gender, 'address':address}
     insert_result = insert_user(users)
     logging.debug(insert_result)

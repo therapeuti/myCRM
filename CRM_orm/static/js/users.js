@@ -179,7 +179,7 @@ function render_users(users) {
 // 페이지 버튼 렌더링하는 함수
 function render_page_btns(end) {
     console.log('-----render_page_btns 함수 실행')
-    current_page = get_current_page() 
+    let current_page = get_current_page() 
     // 페이지 버튼 비활성화 여부
     if (current_page == end) {
         next.disabled = true;
@@ -286,11 +286,11 @@ function change_page(page, pushState=true) {
         const url = new URL(window.location);
         url.searchParams.set('page', page);
         history.pushState({page: page}, '', url);
-        }
+    }
     fetch_users_data()
-    .then(data => {
-        render_page(data)
-    })
+        .then(data => {
+            render_page(data)
+        })
 }
 
 change_page(1, false)
