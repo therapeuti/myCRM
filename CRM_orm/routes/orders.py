@@ -4,8 +4,8 @@ from database.orders_db import *
 import math
 
 logging.basicConfig(level=logging.DEBUG,
-                       format='%(asctime)s [%(levelname)s] %(message)s',
-                       datefmt='%Y-%m-%d %H-%M-%S')
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 
 orders_bp = Blueprint('orders', __name__)
 

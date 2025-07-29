@@ -83,13 +83,11 @@ def user_login():
     logging.debug(login_user)
     if not login_user:
         return redirect(url_for('customer_page', message='로그인 실패'))
-        # return jsonify({'success': False, 'message': '로그인 실패 : 사용자 정보 없음'})
     else:
         login_user = get_user_by_id(u_id)
         store_type = get_store_type()
         logging.debug(store_type)
         return redirect(url_for('kiosk_page', id=u_id))
-        # return jsonify({'success': True, 'redirect_url': url_for('kiosk_page', id=u_id)}) 
     
 @app.route('/signup', methods=['POST'])
 def user_signup():

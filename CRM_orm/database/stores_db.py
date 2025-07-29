@@ -46,10 +46,12 @@ def get_store_name(type):
 
 def get_store_by_id(id_):
     store = Store.query.get(id_)
-    store_dict = store.to_dict()
-    if store is None:
-        store_dict = {}
-    return store_dict
+    logging.debug(store)
+    if store is not None:
+       store_dict = store.to_dict()
+       return store_dict
+    else:
+        return store
 
 def get_monthly_sales(id):
     sales = db.session.query(func.strftime('%Y-%m', Order.ordertime).label('monthly'),

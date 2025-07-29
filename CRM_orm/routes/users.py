@@ -10,8 +10,8 @@ import uuid
 from datetime import datetime
 
 logging.basicConfig(level=logging.INFO,
-                   format='%(asctime)s [%(levelname)s] %(message)s',
-                   datefmt='%Y-%m-%d %H-%M-%S')
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 
 users_bp = Blueprint('users', __name__)
 

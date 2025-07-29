@@ -11,7 +11,6 @@
 			<div class="signup">
 				<form action="/signup" method="post">
 					<label for="chk" aria-hidden="true">Sign up</label><br>  <!--라벨 for 속성이 체크박스의 id와 연결되어 있으므로 라벨을 클릭하면 위 체크박스가 체크/해제됨 */-->
-					<!-- <input type="text" name="id" placeholder="User ID" required=""><br> -->
 					<input type="text" name="name" placeholder="이름" required=""><br>
 					<input type="date" name="birthdate" placeholder="생년월일" max="2024-12-31" required=""><br>
                     <select name="gender">
@@ -41,22 +40,5 @@
 	if (message) {
 		document.getElementById('login_fail').innerText = message;
 	}
-	// document.getElementById('id_submit').addEventListener('click', (e) => {
-	// 	e.preventDefault();
-
-	// 	fetch('/user_login', {
-	// 		method: 'POST',
-	// 		body: FormData})
-	// 		.then(response => response.json())
-	// 		.then(data => {
-	// 			if (!data.success){
-	// 				document.getElementById('login_fail').innerText = data.message
-	// 			}
-	// 			else {
-	// 				window.location.href = data.redirect_url
-	// 			}}
-	// 		)
-	// 	}
-	// 	)
 </script>
 </html>

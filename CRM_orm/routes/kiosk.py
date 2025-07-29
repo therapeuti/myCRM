@@ -7,8 +7,8 @@ import uuid
 from datetime import datetime
 
 logging.basicConfig(level=logging.DEBUG,
-                       format='%(asctime)s [%(levelname)s] %(message)s',
-                       datefmt='%Y-%m-%d %H-%M-%S')
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 
 kiosk_bp = Blueprint('kiosk', __name__)
 
