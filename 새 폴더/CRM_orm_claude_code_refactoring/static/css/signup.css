@@ -1,0 +1,122 @@
+* {
+    box-sizing: border-box;
+    font-family: "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+#chk {
+    display: none;
+}
+
+.main {
+    width: 360px;
+    height: 520px;
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.main .signup,
+.main .login {
+    align-items: center;
+    justify-content: center;
+}
+
+.signup, .login {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 30px 25px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 12px;
+    transition-duration: 0.8s;
+    transition-timing-function: ease;
+}
+
+.signup {
+    background-color: #ffffff;
+    transform: translateX(100%);
+}
+
+.login {
+    background-color: #ffffff;
+    transform: translateX(0%);
+}
+
+#chk:checked ~ .signup {
+    transform: translateX(0%);
+}
+
+#chk:checked ~ .login {
+    transform: translateX(-100%);
+}
+
+label {
+    display: block;
+    margin-bottom: 30px;
+    font-size: 26px;
+    color: #333333;
+    font-weight: 600;
+}
+
+input, select {
+    width: 100%;
+    height: 42px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    color: #333333;
+    font-size: 14px;
+    transition: border 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border: 1px solid #007BFF;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+input::placeholder {
+    color: #aaaaaa;
+}
+
+button {
+    width: 100%;
+    height: 42px;
+    border-radius: 10px;
+    background-color: #007BFF;
+    border: none;
+    margin-top: 25px;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#login_fail {
+    color: red;
+    height: 30px;
+    font-size: 14px;
+}

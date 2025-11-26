@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> 주문 조회 </title>
+    <link rel="stylesheet" href="/static/css/orders.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="container">
+        <h1>주문 목록</h1>
+        <form>
+            <div id="search">
+                <select id="search_field">
+                    <option value="id" selected>ID</option>
+                    <option value="store_id">Store ID</option>
+                    <option value="user_id">User ID</option>
+                </select>
+                <input type="text" id="input_query" placeholder="검색어 입력">
+                <input type="date" id="orderdate" name="ordertime">
+                <button type="submit" id="submit">검색</button>
+                <button type="button" id="reset">초기화</button>
+            </div>
+            <div id="order_by">
+                <label> 정렬기준
+                    <select id="orderby" name="orderby">
+                        <option value="id" selected>ID</option>
+                        <option value="ordertime">Order Time</option>
+                        <option value="store_id">Store ID</option>
+                        <option value="user_id">User ID</option>
+                    </select>
+                </label>
+            </div>
+        </form>
+        <table id="order_table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Order Time</th>
+                <th>Store ID</th>
+                <th>User ID</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- 주문  목록 뜨는 곳 -->
+        </tbody>
+    </table>
+    <p class="comment" id="search_result"></p>
+    </div>
+    <div id="btn-container">
+        <div class="page-btn">
+            <button id="start_page">처음</button>
+            <button id="prev10">-10</button>
+            <button id="previous">이전</button>
+        </div>
+        <div id="pagination">
+            <!-- 페이지 번호 뜨는 곳 -->
+        </div>
+        <div class="page-btn">
+            <button id="next">다음</button>
+            <button id="next10">+10</button>
+            <button id="end_page">끝</button>
+        </div>
+    </div>
+    <script src="/static/js/orders.js">
+    </script>
+</body>
+</html>

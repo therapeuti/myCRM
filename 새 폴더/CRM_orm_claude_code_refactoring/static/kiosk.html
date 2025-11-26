@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 페이지</title>
+    <link rel="stylesheet" href="/static/css/kiosk.css">
+</head>
+<body>
+    <h2> 주문 페이지 </h2>
+    <h3 id="welcome"></h3>
+    
+    <form>
+        <h3> 매장 선택 </h3>
+        <select id="store_type">
+            <!-- 매장 종류 넣을 곳 -->
+        </select>
+        <select id="store_name">
+            <option> 매장을 선택하세요. </option>
+        </select>
+        <br>
+        <br>
+        <h3> 상품 선택 </h3>
+        <table id="items">
+            <tr>
+                <th>종류</th>
+                <th>상품</th>
+                <th>단위 가격</th>
+                <th>수량</th>
+                <th>가격</th>
+            </tr>
+        </table>
+    </form>
+    <div id="align_right">
+        <h3><div id="total_price"></div></h3>
+        <button id="order" type="submit" disabled="true">주문하기</button>
+    </div>
+    <script src="/static/js/kiosk.js">
+    </script>
+</body>
+</html>

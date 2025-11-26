@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스토어 조회</title>
+    <link rel="stylesheet" href="/static/css/stores.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="container">
+        <div id="stores_title">
+            <h1>스토어 목록</h1>
+            <button id="add_store">스토어 추가</button>
+        </div>
+        <form>
+            <div id="search">
+                <select id="search_field">
+                    <option value="id" selected>ID</option>
+                    <option value="name">Name</option>
+                    <option value="address">Address</option>
+                </select>
+                <input type="text" id="input_query" placeholder="검색어 입력">
+                <select id="store_type" name="type">
+                    <!-- 매장 타입 불러와서 추가 -->
+                </select>
+                <button type="submit" id="submit">검색</button>
+                <button type="button" id="reset">초기화</button>
+            </div>
+            <div id="order_by">
+                <label> 정렬기준
+                    <select id="orderby" name="orderby">
+                        <option value="id">ID</option>
+                        <option value="name" selected>Name</option>
+                        <option value="address">Address</option>
+                    </select>
+                </label>
+            </div>
+        </form>
+        <table id="store_table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="stores_tbody">
+            <!-- 스토어 목록 뜨는 곳 -->
+        </tbody>
+    </table>
+    <p class="comment" id="search_result"></p>
+    </div>
+    <div id="btn-container">
+        <div class="page-btn">
+            <button id="start_page">처음</button>
+            <button id="prev10">-10</button>
+            <button id="previous">이전</button>
+        </div>
+        <div id="pagination">
+            <!-- 페이지 번호 뜨는 곳 -->
+        </div>
+        <div class="page-btn">
+            <button id="next">다음</button>
+            <button id="next10">+10</button>
+            <button id="end_page">끝</button>
+        </div>
+    </div>
+    <div id="modal_stores" class="modal">
+        <div id="insert_stores">
+            <button id="close">X</button>
+            <form action="/api/add_store" method="post" id="modal_form">
+                <h3>스토어 추가</h3><br>
+                <select id="modal_store_type" name="type">
+                    <!-- 매장 종류 뜨는 곳 -->
+                </select>
+                <input type="text" name="name" placeholder="이름" required>
+                <input type="text" name="address" placeholder="주소" required>
+                <button id="">스토어 정보 추가하기</button>
+            </form>
+        </div>
+    </div>
+    <script src="/static/js/stores.js">
+    </script>
+</body>
+</html>
