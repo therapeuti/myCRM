@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 상세정보</title>
+    <link rel="stylesheet" href="/static/css/users.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="user_container">
+        <a href="javascript:history.back()" class="back_link">뒤로가기</a>
+        <div id="user_head">
+            <h3>사용자 상세 정보</h3>    
+            <div id="edit_btn">
+                <button id="update">수정</button>
+                <button id="delete">삭제</button>
+            </div>
+        </div>
+        <table id="user">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Birthdate</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr>
+                <td id="user_id"></td>
+                <td><input type="text" id="user_name"></td>
+                <td><input type="date" id="birthdate"></td>
+                <td><input type="number" id="age"></td>
+                <td><select id="gender"><option>Female</option><option>Male</option></select></td>
+                <td><input type="text" id="address"></td>
+            </tr>
+            <!-- 사용자 정보 뜨는 곳 -->
+        </tbody>
+        </table>
+        <h3>사용자의 주문내역</h3>
+        <div id="order_history_container">    
+            <table id="order_history">
+                <tr>
+                    <th>order_id</th>
+                    <th>ordertime</th>
+                    <th>store</th>
+                    <th>item</th>
+                </tr>
+                <tr>
+                    <!-- 주문 내역 뜨는 곳 -->
+                </tr>
+            </table>
+            <p class="comment" id="p_order_history"></p>
+        </div>
+        <h3>자주 방문한 매장 Top 5</h3> 
+        <p class="top5" id="p_store_top5"></p>
+        <ol id="store_top5">
+            <!-- 매장 리스트 -->
+        </ol>
+        <h3>자주 주문한 상품명 Top 5</h3>
+        <p class="top5" id="p_item_top5"></p>
+        <ol id="item_top5">
+            <!-- 상품 리스트 -->
+        </ol> 
+    </div>
+    <script src="/static/js/user_info.js">
+    </script>
+</body>
+</html>

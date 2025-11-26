@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이템 조회</title>
+    <link rel="stylesheet" href="/static/css/items.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="container">
+        <div id="items_title">
+            <h1>아이템 목록</h1>
+            <button id="add_item">아이템 추가</button>
+        </div>
+        <form>
+            <div id="search">
+                <select id="search_field">
+                    <option value="id" selected>ID</option>
+                    <option value="name">Name</option>
+                </select>
+                <input type="text" id="input_query" placeholder="검색어 입력">
+                <select id="item_type" name="type">
+                    <!-- 아이템 타입 불러와서 추가 -->
+                </select>
+                <button type="submit" id="submit">검색</button>
+                <button type="button" id="reset">초기화</button>
+            </div>
+            <div id="order_by">
+                <label> 정렬기준
+                    <select id="orderby" name="orderby">
+                        <option value="id">ID</option>
+                        <option value="name" selected>Name</option>
+                        <option value="type">Type</option>
+                        <option value="price">Price</option>
+                    </select>
+                </label>
+            </div>
+        </form>
+        <table id="item_table">
+            <thead>
+            <tr>
+                <th id="i_id">ID</th>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- 아이템 목록 뜨는 곳 -->
+        </tbody>
+    </table>
+    <p class="comment" id="search_result"></p>
+    </div>
+    <div id="btn-container">
+        <div class="page-btn">
+            <button id="start_page">처음</button>
+            <button id="prev10">-10</button>
+            <button id="previous">이전</button>
+        </div>
+        <div id="pagination">
+            <!-- 페이지 번호 뜨는 곳 -->
+        </div>
+        <div class="page-btn">
+            <button id="next">다음</button>
+            <button id="next10">+10</button>
+            <button id="end_page">끝</button>
+        </div>
+    </div>
+    <div id="modal_items" class="modal">
+        <div id="insert_items">
+            <button id="close">X</button>
+            <form action="/api/add_item" method="post" id="modal_form">
+                <h3>아이템 추가</h3><br>
+                <select id="modal_item_type" name="type">
+                    <!-- 아이템 종류 뜨는 곳 -->
+                </select>
+                <input type="text" name="name" placeholder="이름" required="">
+                <input type="number" name="price" placeholder="가격" min=1000 max="100000" required="">
+                <button id="">아이템 정보 추가하기</button>
+            </form>
+        </div>
+    </div>
+    <script src="/static/js/items.js">
+    </script>
+</body>
+</html>

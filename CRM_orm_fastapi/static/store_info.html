@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스토어 상세정보</title>
+    <link rel="stylesheet" href="/static/css/stores.css">
+</head>
+<body>
+    <nav>
+        <a class="nav_link" href="/">Login</a>
+        <a class="nav_link" href="/users" data-section="users">Users</a>
+        <a class="nav_link" href="/stores" data-section="stores">Stores</a>
+        <a class="nav_link" href="/orders" data-section="orders">Orders</a>
+        <a class="nav_link" href="/items" data-section="items">Items</a>
+        <a class="nav_link" href="/orderitems" data-section="orderitems">Orderitems</a>
+    </nav>
+    <hr>
+    <div id="store_container">
+        <a href="javascript:history.back()" class="back_link">뒤로가기</a>
+        <div id="store_head">
+            <h3>스토어 상세 정보</h3>    
+            <div id="edit_btn">
+                <button id="update">수정</button>
+                <button id="delete">삭제</button>
+            </div>
+        </div>
+        <table id="store">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Store TYPE</th>
+                <th>Store Name</th>
+                <th>Store Address</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr>
+                    <td id="store_id"></td>
+                    <td><select id="store_type"></select></td>
+                    <td><input type="text" id="store_name"></td>
+                    <td><input type="text" id="address"></td>
+                </tr>
+                <!-- 스토어 정보 뜨는 곳 -->
+            </tbody>
+        </table>
+        <h3>월간 매출액</h3>
+        <div id="monthly_sales_container">
+            <table id="monthly_sales">
+                <tr>
+                    <th>monthly</th>
+                    <th>revenue</th>
+                    <th>cnt</th>
+                </tr>
+                    <!-- 월간 매출액 뜨는 곳 -->
+            </table>
+            <p class="comment" id="search_monthly_sales"></p>
+        </div>
+        <h3>단골 고객</h3> 
+        <div id="most_visited_container">
+            <table id="most_visited">
+                <tr>
+                    <th>UserID</th>
+                    <th>UserName</th>
+                    <th>Frequent</th>
+                </tr>
+                <!-- 단골 고객 목록 뜨는 곳 -->
+            </table>
+            <p class="comment" id="search_most_visited"></p>
+        </div>
+    </div>
+
+    <script src="/static/js/store_info.js">
+    </script>
+</body>
+</html>

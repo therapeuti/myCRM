@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>고객 로그인 또는 회원가입</title>
+  	<link rel="stylesheet" href="/static/css/signup.css">
+</head>
+<body>
+	<a href="/" style="position:absolute; top:10px; left:10px;">관리자 전용 페이지</a>
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true">
+			<div class="signup">
+				<form action="/signup" method="post">
+					<label for="chk" aria-hidden="true">Sign up</label><br>  <!--라벨 for 속성이 체크박스의 id와 연결되어 있으므로 라벨을 클릭하면 위 체크박스가 체크/해제됨 */-->
+					<input type="text" name="name" placeholder="이름" required=""><br>
+					<input type="date" name="birthdate" placeholder="생년월일" max="2024-12-31" required=""><br>
+                    <select name="gender">
+                        <option value="Female">Female</option>
+                        <option value="Male">male</option>
+                    </select>
+					<input type="text" name="address" placeholder="주소" required=""><br>
+					<button>Sign up</button>
+				</form>
+			</div>
+
+			<div class="login">
+				<form action="/user_login", method="post">
+				<!-- <form> -->
+					<label for="chk" aria-hidden="true">Login</label><br> <!-- 라벨을 클릭하면 위 체크박스가 체크/해제됨 -->
+					<input type="user_id" name="id" placeholder="userID나 'admin'으로 로그인. 회원가입도 가능" required=""><br>
+                    <p id="login_fail"><p>
+					<button id="id_submit">Login</button>
+				</form>
+			</div>
+	</div>
+</body>
+
+<script>
+	const params = new URLSearchParams(window.location.search)
+	const message = params.get('message')
+	if (message) {
+		document.getElementById('login_fail').innerText = message;
+	}
+</script>
+</html>
