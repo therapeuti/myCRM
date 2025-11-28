@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(findstr:*)",
+      "Bash(python -c:*)",
+      "Bash(curl:*)",
+      "Bash(python:*)",
+      "Bash(__NEW_LINE__ echo \"=== Testing Stores API ===\")",
+      "Bash(test:*)",
+      "Bash(__NEW_LINE__ echo \"=== Info Pages Test ===\")",
+      "Bash(find:*)",
+      "Bash(timeout 10 python:*)",
+      "Bash(dir:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

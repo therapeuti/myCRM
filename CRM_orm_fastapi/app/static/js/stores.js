@@ -144,7 +144,7 @@ function render_store(store) {
         const new_td = document.createElement('td')
         if (key == 'id') {
             const new_a = document.createElement('a')
-            new_a.href = `/stores/info/${store[key]}`
+            new_a.href = `/store/info/${store[key]}`
             new_a.innerText = store[key]
             new_td.appendChild(new_a)
             new_tr.appendChild(new_td)
@@ -251,7 +251,7 @@ function fetch_stores_data() {
     if (orderby) {query.set('orderby', orderby)}
     console.log('쿼리 내용: ', query)
 
-    return fetch(`/api/stores/?${query.toString()}`) // blueprint 사용시 fetch경로
+    return fetch(`/api/v1/stores/?${query.toString()}`) // blueprint 사용시 fetch경로
         .then(response => {
             if (response.status == 404) {
                 window.location.href = '/404'

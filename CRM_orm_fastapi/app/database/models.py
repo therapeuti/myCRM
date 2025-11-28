@@ -1,110 +1,114 @@
-from flask_sqlalchemy import SQLAlchemy
-import logging
+"""
+SQLAlchemy ORM 모델 정의
+FastAPI와 호환되는 SQLAlchemy 2.0 스타일의 모델입니다.
+"""
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s [%(levelname)s] %(message)s',
-                    datefmt='%Y-%m-%d %H-%M-%S')
+from sqlalchemy import Column, String, Integer, ForeignKey
+from .base import Base
 
 
-db = SQLAlchemy()
-
-class User(db.Model):
+class User(Base):
+    """사용자 모델"""
     __tablename__ = 'users'
 
-    id = db.Column(db.String, primary_key=True)
-    name = db.Column(db.String)
-    birthdate = db.Column(db.String)
-    age = db.Column(db.Integer)
-    gender = db.Column(db.String)
-    address = db.Column(db.String)
+    id = Column(String, primary_key=True)
+    name = Column(String)
+    birthdate = Column(String)
+    age = Column(Integer)
+    gender = Column(String)
+    address = Column(String)
 
     def to_dict(self):
-        return {'id': self.id,
-                 'name': self.name,
-                 'birthdate': self.birthdate,
-                 'age': self.age,
-                 'gender': self.gender,
-                 'address': self.address}
-    # 디버깅용...
+        return {
+            'id': self.id,
+            'name': self.name,
+            'birthdate': self.birthdate,
+            'age': self.age,
+            'gender': self.gender,
+            'address': self.address
+        }
+
     def __repr__(self):
-        return f'"id":{self.id}, "name":{self.name}, "birthdate":{self.birthdate}, "age":{self.age}, "gender":{self.gender}, "address":{self.address}'
-    # 문자열로 출력...
-    def __str__(self):
-        return f'문자열 변환 : <User {self.id}: {self.name}, {self.address}>'
-    
-class Store(db.Model):
+        return f'<User {self.id}: {self.name}>'
+
+
+class Store(Base):
+    """매장 모델"""
     __tablename__ = 'stores'
 
-    id = db.Column(db.String, primary_key=True)
-    type = db.Column(db.String)
-    name = db.Column(db.String)
-    address = db.Column(db.String)
+    id = Column(String, primary_key=True)
+    type = Column(String)
+    name = Column(String)
+    address = Column(String)
 
     def to_dict(self):
-        return {'id': self.id,
-                'type': self.type,
-                'name': self.name,
-                'address': self.address}
-    # 디버깅용...
-    def __repr__(self):
-        return f'출력 : <Store {self.id}: {self.type}, {self.name}, {self.address}>'    
-    # 문자열로 출력...
-    def __str__(self):
-        return f'문자열 변환 : <Store {self.id}: {self.type}, {self.name}, {self.address}>'
+        return {
+            'id': self.id,
+            'type': self.type,
+            'name': self.name,
+            'address': self.address
+        }
 
-class Order(db.Model):
+    def __repr__(self):
+        return f'<Store {self.id}: {self.name}>'
+
+
+class Order(Base):
+    """주문 모델"""
     __tablename__ = 'orders'
-    id = db.Column(db.String, primary_key=True)
-    ordertime = db.Column(db.String)
-    store_id = db.Column(db.String, db.ForeignKey('stores.id'))
-    user_id = db.Column(db.String, db.ForeignKey('users.id'))
+
+    id = Column(String, primary_key=True)
+    ordertime = Column(String)
+    store_id = Column(String, ForeignKey('stores.id'))
+    user_id = Column(String, ForeignKey('users.id'))
 
     def to_dict(self):
-        return {'id': self.id,
-                'ordertime': self.ordertime,
-                'store_id': self.store_id,
-                'user_id': self.user_id}
-    # 디버깅용...
+        return {
+            'id': self.id,
+            'ordertime': self.ordertime,
+            'store_id': self.store_id,
+            'user_id': self.user_id
+        }
+
     def __repr__(self):
-        return f'출력 : <Order {self.id}: {self.ordertime}, {self.store_id}, {self.user_id}>'    
-    # 문자열로 출력...
-    def __str__(self):
-        return f'문자열 변환 : <Order {self.id}: {self.ordertime}, {self.store_id}, {self.user_id}>'
-        
-class Item(db.Model):
+        return f'<Order {self.id}: {self.ordertime}>'
+
+
+class Item(Base):
+    """상품 모델"""
     __tablename__ = 'items'
 
-    id = db.Column(db.String, primary_key=True)
-    type = db.Column(db.String)
-    name = db.Column(db.String)
-    price = db.Column(db.Integer)
+    id = Column(String, primary_key=True)
+    type = Column(String)
+    name = Column(String)
+    price = Column(Integer)
 
     def to_dict(self):
-        return {'id': self.id,
-                'type': self.type,
-                'name': self.name,
-                'price': self.price}
-    # 디버깅용...
-    def __repr__(self):
-        return f'출력 : <Item {self.id}: {self.type}, {self.name}, {self.price}>'    
-    # 문자열로 출력...
-    def __str__(self):
-        return f'문자열 변환 : <Item {self.id}: {self.type}, {self.name}, {self.price}>'
+        return {
+            'id': self.id,
+            'type': self.type,
+            'name': self.name,
+            'price': self.price
+        }
 
-class Orderitem(db.Model):
+    def __repr__(self):
+        return f'<Item {self.id}: {self.name}>'
+
+
+class Orderitem(Base):
+    """주문-상품 관계 모델"""
     __tablename__ = 'orderitems'
-    
-    id = db.Column(db.String, primary_key=True)
-    order_id = db.Column(db.String, db.ForeignKey('orders.id'))
-    item_id = db.Column(db.String, db.ForeignKey('items.id'))
+
+    id = Column(String, primary_key=True)
+    order_id = Column(String, ForeignKey('orders.id'))
+    item_id = Column(String, ForeignKey('items.id'))
 
     def to_dict(self):
-        return {'id': self.id,
-                'order_id': self.order_id,
-                'item_id': self.item_id}
-    # 디버깅용...
+        return {
+            'id': self.id,
+            'order_id': self.order_id,
+            'item_id': self.item_id
+        }
+
     def __repr__(self):
-        return f'출력 : <Orderitem {self.id}: {self.order_id}, {self.item_id}>'    
-    # 문자열로 출력...
-    def __str__(self):
-        return f'문자열 변환 : <Orderitem {self.id}: {self.order_id}, {self.item_id}>'
+        return f'<Orderitem {self.id}>'

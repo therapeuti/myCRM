@@ -30,21 +30,21 @@ function render_table_with_link(ths, data) {
         switch (key) {
             case 'item_id':
                 const new_a = document.createElement('a')
-                new_a.href = `/items/info/${data[key]}`
+                new_a.href = `/item/info/${data[key]}`
                 new_a.innerText = data[key]
                 new_td.appendChild(new_a)
                 new_tr.appendChild(new_td)
                 break
             case 'store_id':
                 const new_as = document.createElement('a')
-                new_as.href = `/stores/info/${data[key]}`
+                new_as.href = `/store/info/${data[key]}`
                 new_as.innerText = data[key]
                 new_td.appendChild(new_as)
                 new_tr.appendChild(new_td)
                 break
             case 'user_id':
                 const new_au = document.createElement('a')
-                new_au.href = `/users/info/${data[key]}`
+                new_au.href = `/user/info/${data[key]}`
                 new_au.innerText = data[key]
                 new_td.appendChild(new_au)
                 new_tr.appendChild(new_td)
@@ -58,7 +58,7 @@ function render_table_with_link(ths, data) {
 }
 
 // fetch로 주문 정보(스토어, 사용자 정보) 받아오기
-fetch(`/api/order_info/${orderid}`)
+fetch(`/api/v1/order_info/${orderid}`)
     .then(response => response.json())
     .then(data => {
         console.log('주문 기본 정보 받아옴: ', data)
@@ -71,7 +71,7 @@ fetch(`/api/order_info/${orderid}`)
     }
 )
 // 주문내역 받아오기
-fetch(`/api/orders/items/${orderid}`)
+fetch(`/api/v1/orders/items/${orderid}`)
     .then(response => response.json())
     .then(data => {
         console.log('주문내역: ',data)

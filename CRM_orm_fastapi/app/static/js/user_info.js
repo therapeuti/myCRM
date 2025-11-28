@@ -27,7 +27,7 @@ const last = url.split('/')
 const userid = last[last.length - 1] 
 
 update.addEventListener('click', () => {
-    fetch(`/api/update_user/${user_id.textContent}`, {
+    fetch(`/api/v1/update_user/${user_id.textContent}`, {
         method: 'put',
         headers: {'content-type': 'application/json'},
         body: JSON.stringify({
@@ -47,7 +47,7 @@ update.addEventListener('click', () => {
     })})
 
 delete_.addEventListener('click', () => {
-    fetch(`/api/delete_user/${user_id.textContent}`, {
+    fetch(`/api/v1/delete_user/${user_id.textContent}`, {
         method: 'delete'
         })
         .then(response => response.json())
@@ -70,7 +70,7 @@ function render_user_in_input(user) {
 }
 
 // fetch로 쿼리 정보 받아오기
-fetch(`/api/user_info/${userid}`)
+fetch(`/api/v1/user_info/${userid}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)
@@ -78,7 +78,7 @@ fetch(`/api/user_info/${userid}`)
     }
 )
 // 사용자의 주문내역 받아오기
-fetch(`/api/order_history/${userid}`)
+fetch(`/api/v1/order_history/${userid}`)
     .then(response => response.json())
     .then(data => {
         console.log('주문내역: ',data)
@@ -87,7 +87,7 @@ fetch(`/api/order_history/${userid}`)
         } else {
             for (u of data) {
                 const new_tr = document.createElement('tr')
-                new_tr.innerHTML = `<td><a href="/orders/info/${u.order_id}">${u.order_id}</td>
+                new_tr.innerHTML = `<td><a href="/order/info/${u.order_id}">${u.order_id}</td>
                     <td>${u.ordertime}</td>
                     <td>${u.store}</td>
                     <td>${u.item}</td>`
@@ -96,7 +96,7 @@ fetch(`/api/order_history/${userid}`)
             }
     })
 
-fetch(`/api/store_top5/${userid}`)
+fetch(`/api/v1/store_top5/${userid}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)
@@ -112,7 +112,7 @@ fetch(`/api/store_top5/${userid}`)
     }
     )
 
-fetch(`/api/item_top5/${userid}`)
+fetch(`/api/v1/item_top5/${userid}`)
     .then(response => response.json())
     .then(data => {
         if (data.length == 0){

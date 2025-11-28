@@ -142,14 +142,14 @@ function render_orderitem(orderitem) {
                 break
             case 'order_id':
                 const new_as = document.createElement('a')
-                new_as.href = `/orders/info/${orderitem[key]}`
+                new_as.href = `/order/info/${orderitem[key]}`
                 new_as.innerText = orderitem[key]
                 new_td.appendChild(new_as)
                 new_tr.appendChild(new_td)
                 break
             case 'item_id':
                 const new_au = document.createElement('a')
-                new_au.href = `/items/info/${orderitem[key]}`
+                new_au.href = `/item/info/${orderitem[key]}`
                 new_au.innerText = orderitem[key]
                 new_td.appendChild(new_au)
                 new_tr.appendChild(new_td)
@@ -252,7 +252,7 @@ function fetch_orderitems_data() {
     if (orderby) {query.set('orderby', orderby)}
     console.log('쿼리 내용: ', query)
 
-    return fetch(`/api/orderitems/?${query.toString()}`) // blueprint 사용시 fetch경로
+    return fetch(`/api/v1/orderitems/?${query.toString()}`) // blueprint 사용시 fetch경로
         .then(response => {
             if (response.status == 404) {
                 window.location.href = '/404'

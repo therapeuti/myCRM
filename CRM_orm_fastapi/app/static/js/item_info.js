@@ -31,7 +31,7 @@ update.addEventListener('click', () => {
             name: item_name.value,
             price: price.value
         })
-    fetch(`/api/items/update_item/${item_id.textContent}`, {
+    fetch(`/api/v1/items/update_item/${item_id.textContent}`, {
         method: 'put',
         headers: {'content-type': 'application/json'},
         body: JSON.stringify({
@@ -49,7 +49,7 @@ update.addEventListener('click', () => {
     })})
 
 delete_.addEventListener('click', () => {
-    fetch(`/api/items/delete_item/${item_id.textContent}`, {
+    fetch(`/api/v1/items/delete_item/${item_id.textContent}`, {
         method: 'delete'
         })
         .then(response => response.json())
@@ -89,7 +89,7 @@ function render_table_row(ths, data) {
     }
 
 // fetch로 쿼리 정보 받아오기
-fetch(`/api/item_info/${itemid}`)
+fetch(`/api/v1/item_info/${itemid}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)
@@ -99,7 +99,7 @@ fetch(`/api/item_info/${itemid}`)
 )
 
 // 최근 1년간 월간 매출액 정보 받아오기
-fetch(`/api/items/monthly_sales/${itemid}`)
+fetch(`/api/v1/items/monthly_sales/${itemid}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)

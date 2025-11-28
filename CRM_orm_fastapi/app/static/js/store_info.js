@@ -25,7 +25,7 @@ const last = url.split('/')
 const storeid = last[last.length - 1] 
 
 update.addEventListener('click', () => {
-    fetch(`/api/stores/update_store/${store_id.textContent}`, {
+    fetch(`/api/v1/stores/update_store/${store_id.textContent}`, {
         method: 'put',
         headers: {'content-type': 'application/json'},
         body: JSON.stringify({
@@ -43,7 +43,7 @@ update.addEventListener('click', () => {
     })})
 
 delete_.addEventListener('click', () => {
-    fetch(`/api/stores/delete_store/${store_id.textContent}`, {
+    fetch(`/api/v1/stores/delete_store/${store_id.textContent}`, {
         method: 'delete'
         })
         .then(response => response.json())
@@ -78,7 +78,7 @@ function render_table_row(ths, data) {
         const new_td = document.createElement('td')
         if (key == 'user_id'){
             const new_a = document.createElement('a')
-            new_a.href = `/users/info/${data[key]}`
+            new_a.href = `/user/info/${data[key]}`
             new_a.innerText = data[key]
             new_td.appendChild(new_a)
             new_tr.appendChild(new_td)
@@ -91,7 +91,7 @@ function render_table_row(ths, data) {
     }
 
 // fetch로 쿼리 정보 받아오기
-fetch(`/api/store_info/${storeid}`)
+fetch(`/api/v1/store_info/${storeid}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)
@@ -100,7 +100,7 @@ fetch(`/api/store_info/${storeid}`)
     }
 )
 // 스토어의 월간 매출액 받아오기
-fetch(`/api/store/monthly_sales/${storeid}`)
+fetch(`/api/v1/store/monthly_sales/${storeid}`)
     .then(response => response.json())
     .then(data => {
         console.log('주문내역: ',data)
@@ -115,7 +115,7 @@ fetch(`/api/store/monthly_sales/${storeid}`)
             }
     })
 
-fetch(`/api/store/most_visited/${storeid}`)
+fetch(`/api/v1/store/most_visited/${storeid}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)

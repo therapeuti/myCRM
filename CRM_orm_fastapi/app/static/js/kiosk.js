@@ -12,7 +12,7 @@ console.log(user_id)
 store_type.addEventListener('change', (e) => {
     store_name.style.display = "inline-block";
     console.log(e.target.value)
-    fetch(`/api/store_name/${e.target.value}`)
+    fetch(`/api/v1/store_name/${e.target.value}`)
         .then(response => response.json())
         .then(data => {
             store_name.options.length = 0
@@ -34,10 +34,11 @@ store_name.addEventListener('change', (e) => {
     // document.getElementById('store_for_order').innerText = store_name.options[store_name.selectedIndex].text
     const store_id = e.target.value
     console.log(store_id)
-    fetch('/api/items')
+    fetch('/api/v1/items')
         .then(response => response.json())
         .then(data => {
-            for (i of data) {
+            const itemList = Array.isArray(data) ? data : data.items || []
+            for (i of itemList) {
                 console.log(i)
                 const new_tr = document.createElement('tr')
                 new_tr.innerHTML = `<td>${i.type}</td>
@@ -48,11 +49,11 @@ store_name.addEventListener('change', (e) => {
                                         <input class="number" type="number" value=0 min=0 max=50 data-id=${i.id}>
                                         <button type="button" class="plus">+</button>
                                     </td>
-                                    <td class="price"></td>`       
+                                    <td class="price"></td>`
                 items.appendChild(new_tr)
-                
+
             }
-            
+
         })
     })
 
@@ -118,7 +119,7 @@ add_order.addEventListener('click', (e) => {
             'store_id': store_id,
             'items': item_ids
         }
-        fetch('/api/add_order', {
+        fetch('/api/v1/add_order', {
             method: 'POST',
             headers: {'content-type': 'application/json; charset=UTF-8'},
             body: JSON.stringify(order_data)                
@@ -197,13 +198,13 @@ function sum_price() {
 
 }
 
-fetch(`/api/user_info/${user_id}`)
+fetch(`/api/v1/user_info/${user_id}`)
     .then(response => response.json())
     .then(data => {
         document.getElementById('welcome').innerText = `어서오세요, ${data.name}님(${data.id})`
     })
 
-fetch(`/api/store_type`)
+fetch(`/api/v1/store_type`)
     .then(response => response.json())
     .then(data => {
         load_store_type(data)

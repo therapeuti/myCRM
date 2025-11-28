@@ -139,7 +139,7 @@ function render_item(item) {
         const new_td = document.createElement('td')
         if (key == 'id') {
             const new_a = document.createElement('a')
-            new_a.href = `/items/info/${item[key]}`
+            new_a.href = `/item/info/${item[key]}`
             new_a.innerText = item[key]
             new_td.appendChild(new_a)
             new_tr.appendChild(new_td)
@@ -244,7 +244,7 @@ function fetch_items_data() {
     if (orderby) {query.set('orderby', orderby)}
     console.log('쿼리 내용: ', query)
 
-    return fetch(`/api/items/?${query.toString()}`) // blueprint 사용시 fetch경로
+    return fetch(`/api/v1/items/?${query.toString()}`) // blueprint 사용시 fetch경로
         .then(response => {
             if (response.status == 404) {
                 window.location.href = '/404'

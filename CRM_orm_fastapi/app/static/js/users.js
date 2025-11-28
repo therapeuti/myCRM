@@ -147,7 +147,7 @@ function render_user(user) {
         const new_td = document.createElement('td')
         if (key == 'id') {
             const new_a = document.createElement('a')
-            new_a.href = `/users/info/${user[key]}`
+            new_a.href = `/user/info/${user[key]}`
             new_a.innerText = user[key]
             new_td.appendChild(new_a)
             new_tr.appendChild(new_td)
@@ -254,7 +254,7 @@ function fetch_users_data() {
     if (orderby) {query.set('orderby', orderby)}
     console.log('쿼리 내용: ', query)
 
-    return fetch(`/api/users/?${query.toString()}`) // blueprint 사용시 fetch경로
+    return fetch(`/api/v1/users/?${query.toString()}`) // blueprint 사용시 fetch경로
         .then(response => {
             if (response.status == 404) {
                 window.location.href = '/404'
