@@ -1,5 +1,4 @@
-# 앱 실행 진입점
-
+# 앱 실행 용도
 import uvicorn
 from app.main import app
 

@@ -1,5 +1,5 @@
-from database.kiosk_db import *
-from database.models import *
+from models.kiosk_db import *
+from models.models import *
 from sqlalchemy import and_, func
 
 def get_items_list(count: int, filtering: dict, where: list):

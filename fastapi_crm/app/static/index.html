@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
+    <title>CRM 로그인 페이지</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+
+<body>
+    <a href="/login" style="position:absolute; top:10px; left:10px;">고객 전용 페이지</a>
+    <div class="container">
+        <i class="fa-solid fa-circle-user fa-5x" style="color:rgb(61, 167, 232)"></i>
+        <h2>관리자 로그인</h2>
+        <form action="/api/admin/" method="post">
+            <input type="text" name="id" id="user_id" placeholder="😊Username">
+            <input type="password" name="pw" id="user_pw" placeholder="🔒Password">
+            <br>
+            <input type="submit" value="Login">
+        </form>
+        <div class="join">
+            <label for="remember-me">
+                <input type="checkbox" id="remember-me">Remember me</label>
+            <button><a href="">Forgot Password?</a></button>
+        </div>
+    </div>
+</body>
+<script>
+</script>
+
+</html>
